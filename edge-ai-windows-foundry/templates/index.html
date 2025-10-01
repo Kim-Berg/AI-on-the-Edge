@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows AI Foundry Demo - Comprehensive AI Showcase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <h1>Windows AI Foundry</h1>
+                    <span class="version">v1.0 Demo</span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot" id="connection-status"></div>
+                    <span id="status-text">Initializing...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container main-container">
+        
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h2>🚀 Comprehensive AI Capabilities Showcase</h2>
+                <p>Experience the power of Windows AI Foundry with local AI processing, advanced capabilities, and enterprise-grade performance—all running directly on your Windows device.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-microchip"></i>
+                        <h3 id="model-count">0</h3>
+                        <p>AI Models Available</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>8</h3>
+                        <p>AI Capabilities</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>100%</h3>
+                        <p>Privacy Protected</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3 id="response-count">0</h3>
+                        <p>Responses Generated</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Selection -->
+        <section class="model-section">
+            <h3><i class="fas fa-robot"></i> AI Model Selection</h3>
+            <div class="model-selector">
+                <select id="model-select">
+                    <option value="">Loading models...</option>
+                </select>
+                <button id="refresh-models" class="btn btn-secondary">
+                    <i class="fas fa-refresh"></i> Refresh
+                </button>
+            </div>
+            <div id="model-info" class="model-info">
+                <p>Select a model to see details</p>
+            </div>
+        </section>
+
+        <!-- AI Capabilities Grid -->
+        <section class="capabilities-section">
+            <h3><i class="fas fa-magic"></i> AI Capabilities</h3>
+            <div class="capabilities-grid">
+                
+                <!-- Text Generation -->
+                <div class="capability-card" data-capability="text_generation">
+                    <div class="capability-header">
+                        <i class="fas fa-pen-nib"></i>
+                        <h4>Text Generation</h4>
+                    </div>
+                    <p>Generate human-like text for various purposes including content creation, writing assistance, and communication.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Code Assistance -->
+                <div class="capability-card" data-capability="code_assistance">
+                    <div class="capability-header">
+                        <i class="fas fa-code"></i>
+                        <h4>Code Assistance</h4>
+                    </div>
+                    <p>Get intelligent code suggestions, debugging help, and programming guidance across multiple languages.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Document Analysis -->
+                <div class="capability-card" data-capability="document_analysis">
+                    <div class="capability-header">
+                        <i class="fas fa-file-text"></i>
+                        <h4>Document Analysis</h4>
+                    </div>
+                    <p>Analyze documents, extract insights, identify key information, and generate comprehensive summaries.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Creative Writing -->
+                <div class="capability-card" data-capability="creative_writing">
+                    <div class="capability-header">
+                        <i class="fas fa-feather-alt"></i>
+                        <h4>Creative Writing</h4>
+                    </div>
+                    <p>Create engaging stories, marketing content, poetry, and other creative written materials.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Multimodal Analysis -->
+                <div class="capability-card" data-capability="multimodal">
+                    <div class="capability-header">
+                        <i class="fas fa-eye"></i>
+                        <h4>Multimodal Analysis</h4>
+                    </div>
+                    <p>Understand and analyze both visual and textual content simultaneously for comprehensive insights.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Advanced Reasoning -->
+                <div class="capability-card" data-capability="reasoning">
+                    <div class="capability-header">
+                        <i class="fas fa-brain"></i>
+                        <h4>Advanced Reasoning</h4>
+                    </div>
+                    <p>Perform complex logical analysis, problem-solving, and critical thinking tasks.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Translation -->
+                <div class="capability-card" data-capability="translation">
+                    <div class="capability-header">
+                        <i class="fas fa-globe"></i>
+                        <h4>Translation</h4>
+                    </div>
+                    <p>Translate text between multiple languages with context awareness and cultural adaptation.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+                <!-- Summarization -->
+                <div class="capability-card" data-capability="summarization">
+                    <div class="capability-header">
+                        <i class="fas fa-compress-alt"></i>
+                        <h4>Summarization</h4>
+                    </div>
+                    <p>Generate concise, accurate summaries of long documents and complex information.</p>
+                    <button class="btn btn-primary capability-btn">Try It</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interaction Area -->
+        <section class="interaction-section" id="interaction-area" style="display: none;">
+            <h3><i class="fas fa-comments"></i> AI Interaction</h3>
+            
+            <div class="interaction-content">
+                
+                <!-- Capability Info -->
+                <div class="capability-info" id="capability-info">
+                    <h4 id="current-capability">Select a Capability</h4>
+                    <p id="capability-description">Choose an AI capability above to get started.</p>
+                </div>
+
+                <!-- Example Prompts -->
+                <div class="examples-section" id="examples-section" style="display: none;">
+                    <h5><i class="fas fa-lightbulb"></i> Example Prompts</h5>
+                    <div class="examples-grid" id="examples-list">
+                        <!-- Examples will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="user-prompt" 
+                            placeholder="Enter your prompt here..."
+                            rows="4"
+                        ></textarea>
+                        <div class="input-controls">
+                            <button id="generate-btn" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Generate Response
+                            </button>
+                            <button id="clear-input-btn" class="btn btn-secondary">
+                                <i class="fas fa-trash"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="settings-section">
+                    <button class="settings-toggle" id="settings-toggle">
+                        <i class="fas fa-cog"></i> Advanced Settings
+                    </button>
+                    <div class="settings-content" id="settings-content" style="display: none;">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label for="temperature-slider">Temperature: <span id="temperature-value">0.7</span></label>
+                                <input type="range" id="temperature-slider" min="0" max="1" step="0.1" value="0.7">
+                            </div>
+                            <div class="setting-item">
+                                <label for="max-tokens-input">Max Tokens:</label>
+                                <input type="number" id="max-tokens-input" min="50" max="4000" value="2000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response Area -->
+                <div class="response-section" id="response-section" style="display: none;">
+                    <h5><i class="fas fa-reply"></i> AI Response</h5>
+                    <div class="response-container">
+                        <div class="response-header">
+                            <div class="response-meta">
+                                <span class="model-badge" id="response-model">Model: Loading...</span>
+                                <span class="timestamp" id="response-timestamp">Timestamp</span>
+                            </div>
+                            <button class="copy-btn" id="copy-response" title="Copy response">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="response-content" id="response-content">
+                            <!-- AI response will appear here -->
+                        </div>
+                        <div class="response-actions">
+                            <button id="regenerate-btn" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Regenerate
+                            </button>
+                            <button id="save-response-btn" class="btn btn-secondary">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div class="loading-container" id="loading-container" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Generating AI response...</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section class="history-section">
+            <div class="history-header">
+                <h3><i class="fas fa-history"></i> Conversation History</h3>
+                <div class="history-controls">
+                    <button id="refresh-history-btn" class="btn btn-secondary">
+                        <i class="fas fa-refresh"></i> Refresh
+                    </button>
+                    <button id="clear-history-btn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+            <div class="history-container" id="history-container">
+                <div class="history-empty">
+                    <i class="fas fa-comments"></i>
+                    <p>No conversations yet. Start by selecting a capability and entering a prompt.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Information -->
+        <section class="system-info-section">
+            <h3><i class="fas fa-info-circle"></i> System Information</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Connection Status</h4>
+                    <div id="connection-details">
+                        <p><strong>Foundry Endpoint:</strong> <span id="foundry-endpoint">Checking...</span></p>
+                        <p><strong>Current Model:</strong> <span id="current-model-info">Loading...</span></p>
+                        <p><strong>Processing Mode:</strong> <span id="processing-mode">Detecting...</span></p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h4>Performance</h4>
+                    <div id="performance-stats">
+                        <p><strong>Total Requests:</strong> <span id="total-requests">0</span></p>
+                        <p><strong>Average Response Time:</strong> <span id="avg-response-time">-</span></p>
+                        <p><strong>Success Rate:</strong> <span id="success-rate">-</span></p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h4>Privacy & Security</h4>
+                    <div class="privacy-info">
+                        <p><i class="fas fa-shield-check"></i> Local processing only</p>
+                        <p><i class="fas fa-lock"></i> No data transmitted to cloud</p>
+                        <p><i class="fas fa-user-shield"></i> Complete privacy protection</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Windows AI Foundry Demo. Showcasing local AI capabilities on Windows devices.</p>
+            <p>Built with ❤️ for developers, by developers.</p>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notifications" class="notifications-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

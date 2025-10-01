@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge AI Quality Control Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <style>
+        .status-card {
+            border-left: 4px solid;
+            margin-bottom: 1rem;
+        }
+        .status-good { border-left-color: #28a745; }
+        .status-warning { border-left-color: #ffc107; }
+        .status-danger { border-left-color: #dc3545; }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .processing-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #28a745;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .alert-item {
+            border-left: 3px solid #dc3545;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+        }
+        
+        .camera-container {
+            position: relative;
+            max-width: 640px;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-microchip"></i> Edge AI Quality Control System
+            </span>
+            <span class="navbar-text">
+                <span class="processing-indicator"></span> Live Processing
+            </span>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Key Metrics Row -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card status-card status-good">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fas fa-check-circle text-success"></i> Pass Rate</h5>
+                        <div class="metric-value text-success" id="pass-rate">100.0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card status-card status-good">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fas fa-clock text-info"></i> Avg Response</h5>
+                        <div class="metric-value text-info" id="avg-time">0ms</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card status-card status-good">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fas fa-box text-primary"></i> Inspected</h5>
+                        <div class="metric-value text-primary" id="total-inspected">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card status-card status-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fas fa-exclamation-triangle text-warning"></i> Defects</h5>
+                        <div class="metric-value text-danger" id="defects-found">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Live Processing Section -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-camera"></i> Live Quality Inspection</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Upload Image for Inspection</h6>
+                                <input type="file" class="form-control mb-3" id="imageInput" accept="image/*">
+                                <button class="btn btn-primary" onclick="processImage()">
+                                    <i class="fas fa-play"></i> Process Image
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="result-display" class="mt-3">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i> Upload an image to start quality inspection
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-line"></i> Real-time Performance</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="performance-chart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts and Status -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5><i class="fas fa-bell"></i> Recent Alerts</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div id="alerts-list">
+                            <div class="text-muted text-center">No alerts yet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-cogs"></i> System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Edge Processing:</strong> 
+                            <span class="badge bg-success">Online</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>AI Model:</strong> 
+                            <span id="ai-status" class="badge bg-success">Loading...</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Model Name:</strong> 
+                            <span id="model-name" class="text-muted">Detecting...</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>MQTT Connection:</strong> 
+                            <span class="badge bg-warning">Simulated</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Last Update:</strong> 
+                            <span id="last-update">Never</span>
+                        </div>
+                        
+                        <hr>
+                        <h6>Demo Features</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> Real-time inference</li>
+                            <li><i class="fas fa-check text-success"></i> Offline capability</li>
+                            <li><i class="fas fa-check text-success"></i> Edge optimization</li>
+                            <li><i class="fas fa-check text-success"></i> IoT integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+        
+        // Data storage for charts
+        let timeData = [];
+        let passRateData = [];
+        let responseTimeData = [];
+        
+        // Socket event handlers
+        socket.on('quality_update', function(data) {
+            updateMetrics(data.metrics);
+            if (data.result) {
+                updateResult(data.result);
+            }
+            updateChart();
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+        });
+        
+        function updateMetrics(metrics) {
+            document.getElementById('pass-rate').textContent = metrics.pass_rate.toFixed(1) + '%';
+            document.getElementById('avg-time').textContent = Math.round(metrics.avg_processing_time) + 'ms';
+            document.getElementById('total-inspected').textContent = metrics.total_inspected;
+            document.getElementById('defects-found').textContent = metrics.defects_found;
+            
+            // Update alerts
+            updateAlerts(metrics.alerts);
+        }
+        
+        function updateResult(result) {
+            const resultDiv = document.getElementById('result-display');
+            const alertClass = result.is_defective ? 'alert-danger' : 'alert-success';
+            const icon = result.is_defective ? 'fas fa-times-circle' : 'fas fa-check-circle';
+            
+            let resultHtml = `
+                <div class="alert ${alertClass}">
+                    <h6><i class="${icon}"></i> AI Inspection Result</h6>
+                    <p><strong>Status:</strong> ${result.is_defective ? 'DEFECTIVE' : 'PASS'}</p>
+                    <p><strong>Confidence:</strong> ${(result.defect_probability * 100).toFixed(1)}%</p>
+                    <p><strong>Type:</strong> ${result.defect_type}</p>
+                    <p><strong>Processing Time:</strong> ${result.processing_time_ms.toFixed(1)}ms</p>`;
+            
+            if (result.ai_confidence) {
+                resultHtml += `<p><strong>AI Confidence:</strong> ${(result.ai_confidence * 100).toFixed(1)}%</p>`;
+            }
+            
+            if (result.defect_description && result.defect_description !== result.defect_type) {
+                resultHtml += `<p><strong>Description:</strong> ${result.defect_description}</p>`;
+            }
+            
+            if (result.areas_of_concern && result.areas_of_concern.length > 0) {
+                resultHtml += `<p><strong>Areas of Concern:</strong> ${result.areas_of_concern.join(', ')}</p>`;
+            }
+            
+            resultHtml += `</div>`;
+            resultDiv.innerHTML = resultHtml;
+        }
+        
+        function updateAlerts(alerts) {
+            const alertsList = document.getElementById('alerts-list');
+            
+            if (alerts.length === 0) {
+                alertsList.innerHTML = '<div class="text-muted text-center">No alerts yet</div>';
+                return;
+            }
+            
+            const recentAlerts = alerts.slice(-10).reverse();
+            alertsList.innerHTML = recentAlerts.map(alert => `
+                <div class="alert-item">
+                    <small class="text-muted">${new Date(alert.timestamp).toLocaleTimeString()}</small>
+                    <div><strong>${alert.type}</strong></div>
+                    <div>Product ID: ${alert.id} | Confidence: ${(alert.confidence * 100).toFixed(1)}%</div>
+                </div>
+            `).join('');
+        }
+        
+        function updateChart() {
+            const now = new Date();
+            timeData.push(now);
+            
+            // Get current metrics
+            const passRate = parseFloat(document.getElementById('pass-rate').textContent);
+            const responseTime = parseFloat(document.getElementById('avg-time').textContent);
+            
+            passRateData.push(passRate);
+            responseTimeData.push(responseTime);
+            
+            // Keep only last 50 data points
+            if (timeData.length > 50) {
+                timeData.shift();
+                passRateData.shift();
+                responseTimeData.shift();
+            }
+            
+            const trace1 = {
+                x: timeData,
+                y: passRateData,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Pass Rate (%)',
+                line: { color: '#28a745' }
+            };
+            
+            const trace2 = {
+                x: timeData,
+                y: responseTimeData,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Response Time (ms)',
+                yaxis: 'y2',
+                line: { color: '#007bff' }
+            };
+            
+            const layout = {
+                title: '',
+                xaxis: { title: 'Time' },
+                yaxis: { 
+                    title: 'Pass Rate (%)',
+                    side: 'left',
+                    range: [0, 100]
+                },
+                yaxis2: {
+                    title: 'Response Time (ms)',
+                    side: 'right',
+                    overlaying: 'y'
+                },
+                margin: { t: 20, r: 50, l: 50, b: 50 },
+                showlegend: true,
+                legend: { x: 0, y: 1 }
+            };
+            
+            Plotly.newPlot('performance-chart', [trace1, trace2], layout, {responsive: true});
+        }
+        
+        function processImage() {
+            const input = document.getElementById('imageInput');
+            if (!input.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', input.files[0]);
+            
+            fetch('/api/process_image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateResult(data.result);
+                    updateMetrics(data.metrics);
+                } else {
+                    alert('Error processing image: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error processing image');
+            });
+        }
+        
+        function fetchSystemStatus() {
+            fetch('/api/system_status')
+                .then(response => response.json())
+                .then(data => {
+                    const aiStatus = document.getElementById('ai-status');
+                    const modelName = document.getElementById('model-name');
+                    
+                    if (data.ai_enabled) {
+                        aiStatus.textContent = 'Azure AI Active';
+                        aiStatus.className = 'badge bg-success';
+                        modelName.textContent = data.model_name || 'Azure AI Model';
+                    } else {
+                        aiStatus.textContent = 'Simulation Mode';
+                        aiStatus.className = 'badge bg-warning';
+                        modelName.textContent = 'Fallback Algorithm';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching system status:', error);
+                });
+        }
+        
+        // Initialize empty chart
+        updateChart();
+        
+        // Fetch system status
+        fetchSystemStatus();
+    </script>
+</body>
+</html>

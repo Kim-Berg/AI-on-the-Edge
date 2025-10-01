@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge AI Industrial IoT Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <style>
+        .equipment-card {
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+        .health-excellent { border-left-color: #28a745; }
+        .health-good { border-left-color: #17a2b8; }
+        .health-warning { border-left-color: #ffc107; }
+        .health-critical { border-left-color: #dc3545; }
+        
+        .health-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .sensor-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+        }
+        
+        .anomaly-alert {
+            animation: pulse-red 2s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% { background-color: #f8d7da; }
+            50% { background-color: #dc3545; color: white; }
+            100% { background-color: #f8d7da; }
+        }
+        
+        .maintenance-due {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+            color: white;
+        }
+        
+        .system-overview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-industry"></i> Edge AI Industrial IoT Dashboard
+            </span>
+            <span class="navbar-text">
+                <i class="fas fa-microchip text-success"></i> Edge Processing Active
+            </span>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- System Overview -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="system-overview">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="h2 mb-1" id="total-equipment">4</div>
+                            <div>Total Equipment</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="h2 mb-1 text-success" id="healthy-equipment">0</div>
+                            <div>Healthy Equipment</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="h2 mb-1 text-warning" id="maintenance-needed">0</div>
+                            <div>Maintenance Needed</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="h2 mb-1 text-info" id="cost-savings">$0</div>
+                            <div>Cost Savings (YTD)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipment Grid -->
+        <div class="row">
+            <div class="col-lg-8">
+                <h4><i class="fas fa-cogs"></i> Equipment Health Monitor</h4>
+                <div class="row" id="equipment-grid">
+                    <!-- Equipment cards will be populated by JavaScript -->
+                </div>
+                
+                <!-- Real-time Charts -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-line"></i> Real-time Sensor Data</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" id="sensor-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Anomaly Alerts -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Anomaly Alerts</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                        <div id="anomaly-alerts">
+                            <div class="text-muted text-center">
+                                <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                                <p>No anomalies detected</p>
+                                <small>AI monitoring all equipment...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maintenance Schedule -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-calendar-check"></i> Maintenance Schedule</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="maintenance-schedule">
+                            <div class="text-muted text-center">
+                                <i class="fas fa-wrench fa-2x mb-2"></i>
+                                <p>All equipment healthy</p>
+                                <small>No maintenance required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="fas fa-server"></i> System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Edge AI Status:</strong>
+                            <span class="badge bg-success">Online</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>ML Models:</strong>
+                            <span class="badge bg-success">4 Loaded</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Sensor Network:</strong>
+                            <span class="badge bg-success">Connected</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Data Processing:</strong>
+                            <span class="badge bg-info">Real-time</span>
+                        </div>
+                        
+                        <hr>
+                        <h6>Edge Benefits</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-bolt text-warning"></i> <2ms inference</li>
+                            <li><i class="fas fa-shield-alt text-success"></i> Data stays local</li>
+                            <li><i class="fas fa-wifi text-danger"></i> Works offline</li>
+                            <li><i class="fas fa-dollar-sign text-info"></i> No cloud costs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+        
+        // Data storage for charts
+        let timeData = [];
+        let sensorData = {
+            vibration: [],
+            temperature: [],
+            pressure: [],
+            current: []
+        };
+        
+        // Socket event handlers
+        socket.on('sensor_update', function(data) {
+            updateSystemStats(data.stats);
+            updateEquipmentGrid(data.equipment_status);
+            updateAnomalyAlerts(data.anomalies);
+            updateMaintenanceSchedule(data.equipment_status);
+            updateSensorChart(data.equipment_status);
+        });
+        
+        function updateSystemStats(stats) {
+            document.getElementById('healthy-equipment').textContent = stats.healthy_equipment || 0;
+            document.getElementById('maintenance-needed').textContent = stats.equipment_needing_maintenance || 0;
+            document.getElementById('cost-savings').textContent = '$' + (stats.cost_savings || 0).toLocaleString();
+        }
+        
+        function updateEquipmentGrid(equipmentStatus) {
+            const grid = document.getElementById('equipment-grid');
+            
+            grid.innerHTML = Object.entries(equipmentStatus).map(([equipmentId, status]) => {
+                const healthClass = getHealthClass(status.health_score);
+                const statusBadge = getStatusBadge(status);
+                
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card equipment-card ${healthClass}">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h6 class="card-title mb-1">${equipmentId}</h6>
+                                        <p class="text-muted mb-1">${status.equipment_type}</p>
+                                        <p class="text-muted mb-2"><i class="fas fa-map-marker-alt"></i> ${status.location}</p>
+                                        ${statusBadge}
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <div class="health-score ${getHealthColor(status.health_score)}">${status.health_score}%</div>
+                                        <small class="text-muted">Health</small>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row text-center">
+                                    <div class="col-3">
+                                        <div class="sensor-value">${status.current_readings.vibration.toFixed(2)}</div>
+                                        <small class="text-muted">Vibration</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="sensor-value">${status.current_readings.temperature.toFixed(1)}°</div>
+                                        <small class="text-muted">Temp</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="sensor-value">${status.current_readings.pressure.toFixed(1)}</div>
+                                        <small class="text-muted">Pressure</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="sensor-value">${status.current_readings.current.toFixed(1)}A</div>
+                                        <small class="text-muted">Current</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getHealthClass(healthScore) {
+            if (healthScore >= 80) return 'health-excellent';
+            if (healthScore >= 60) return 'health-good';
+            if (healthScore >= 40) return 'health-warning';
+            return 'health-critical';
+        }
+        
+        function getHealthColor(healthScore) {
+            if (healthScore >= 80) return 'text-success';
+            if (healthScore >= 60) return 'text-info';
+            if (healthScore >= 40) return 'text-warning';
+            return 'text-danger';
+        }
+        
+        function getStatusBadge(status) {
+            let badges = [];
+            
+            if (status.anomaly_detected) {
+                badges.push('<span class="badge bg-danger status-badge">Anomaly Detected</span>');
+            }
+            if (status.maintenance_due) {
+                badges.push('<span class="badge bg-warning status-badge">Maintenance Due</span>');
+            }
+            if (badges.length === 0) {
+                badges.push('<span class="badge bg-success status-badge">Operating Normal</span>');
+            }
+            
+            return badges.join(' ');
+        }
+        
+        function updateAnomalyAlerts(anomalies) {
+            const container = document.getElementById('anomaly-alerts');
+            
+            if (!anomalies || anomalies.length === 0) {
+                container.innerHTML = `
+                    <div class="text-muted text-center">
+                        <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                        <p>No anomalies detected</p>
+                        <small>AI monitoring all equipment...</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = anomalies.slice(-10).reverse().map(anomaly => `
+                <div class="anomaly-alert alert alert-danger">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong><i class="fas fa-exclamation-triangle"></i> ${anomaly.equipment_id}</strong>
+                            <br>
+                            <small>${anomaly.equipment_type} - ${anomaly.location}</small>
+                            <br>
+                            <small>Anomaly Score: ${anomaly.anomaly_score.toFixed(3)}</small>
+                        </div>
+                        <small class="text-muted">${new Date(anomaly.timestamp).toLocaleTimeString()}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateMaintenanceSchedule(equipmentStatus) {
+            const container = document.getElementById('maintenance-schedule');
+            
+            const maintenanceItems = Object.entries(equipmentStatus)
+                .filter(([id, status]) => status.maintenance_due)
+                .map(([id, status]) => ({
+                    id,
+                    ...status
+                }));
+            
+            if (maintenanceItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-muted text-center">
+                        <i class="fas fa-wrench fa-2x mb-2"></i>
+                        <p>All equipment healthy</p>
+                        <small>No maintenance required</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = maintenanceItems.map(item => {
+                const urgency = item.health_score < 50 ? 'urgent' : 'scheduled';
+                const urgencyClass = urgency === 'urgent' ? 'alert-danger' : 'alert-warning';
+                const dueDate = item.predicted_failure_date ? 
+                    new Date(item.predicted_failure_date).toLocaleDateString() : 'Soon';
+                
+                return `
+                    <div class="alert ${urgencyClass} mb-2">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>${item.id}</strong>
+                                <br>
+                                <small>${item.equipment_type}</small>
+                                <br>
+                                <small>Health: ${item.health_score.toFixed(1)}%</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge ${urgency === 'urgent' ? 'bg-danger' : 'bg-warning'}">${urgency}</span>
+                                <br>
+                                <small>Due: ${dueDate}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function updateSensorChart(equipmentStatus) {
+            // Update time data
+            const now = new Date();
+            timeData.push(now);
+            
+            // Add latest sensor readings (use first equipment as example)
+            const firstEquipment = Object.values(equipmentStatus)[0];
+            if (firstEquipment) {
+                sensorData.vibration.push(firstEquipment.current_readings.vibration);
+                sensorData.temperature.push(firstEquipment.current_readings.temperature);
+                sensorData.pressure.push(firstEquipment.current_readings.pressure);
+                sensorData.current.push(firstEquipment.current_readings.current);
+            }
+            
+            // Keep only last 50 points
+            if (timeData.length > 50) {
+                timeData.shift();
+                Object.values(sensorData).forEach(data => data.shift());
+            }
+            
+            // Create traces
+            const traces = [
+                {
+                    x: timeData,
+                    y: sensorData.vibration,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Vibration',
+                    line: { color: '#dc3545' }
+                },
+                {
+                    x: timeData,
+                    y: sensorData.temperature,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Temperature (°F)',
+                    yaxis: 'y2',
+                    line: { color: '#fd7e14' }
+                },
+                {
+                    x: timeData,
+                    y: sensorData.pressure,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Pressure (PSI)',
+                    yaxis: 'y3',
+                    line: { color: '#28a745' }
+                }
+            ];
+            
+            const layout = {
+                title: '',
+                xaxis: { title: 'Time' },
+                yaxis: {
+                    title: 'Vibration',
+                    side: 'left'
+                },
+                yaxis2: {
+                    title: 'Temperature (°F)',
+                    overlaying: 'y',
+                    side: 'right'
+                },
+                yaxis3: {
+                    title: 'Pressure (PSI)',
+                    overlaying: 'y',
+                    side: 'right',
+                    position: 0.9
+                },
+                margin: { t: 20, r: 80, l: 50, b: 50 },
+                showlegend: true,
+                legend: { x: 0, y: 1 }
+            };
+            
+            Plotly.newPlot('sensor-chart', traces, layout, {responsive: true});
+        }
+        
+        // Initialize empty chart
+        updateSensorChart({});
+    </script>
+</body>
+</html>
