@@ -18,9 +18,17 @@ import math
 import logging
 import os
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Feature flags for logging control
+ENABLE_DEBUG_LOGGING = os.getenv('ENABLE_DEBUG_LOGGING', 'false').lower() == 'true'
+ENABLE_FLASK_DEBUG = os.getenv('ENABLE_FLASK_DEBUG', 'false').lower() == 'true'
+
+# Configure logging based on feature flags
+log_level = logging.DEBUG if ENABLE_DEBUG_LOGGING else logging.WARNING
+logging.basicConfig(level=log_level)
 logger = logging.getLogger(__name__)
+
+# Reduce werkzeug (Flask) logging noise
+logging.getLogger('werkzeug').setLevel(logging.ERROR if not ENABLE_FLASK_DEBUG else logging.INFO)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'iot-sensor-demo-secret'
@@ -429,7 +437,7 @@ if __name__ == '__main__':
     monitoring_thread = threading.Thread(target=sensor_monitoring_loop, daemon=True)
     monitoring_thread.start()
     
-    logger.info("Starting Edge AI Industrial IoT Sensor System...")
-    logger.info("Access dashboard at: http://localhost:5003")
+    print("Starting Edge AI Industrial IoT Sensor System...")
+    print("Access dashboard at: http://localhost:5003")
     
-    socketio.run(app, host='0.0.0.0', port=5003, debug=False)
+    socketio.run(app, host='0.0.0.0', port=5003, debug=ENABLE_FLASK_DEBUG, log_output=ENABLE_FLASK_DEBUG)

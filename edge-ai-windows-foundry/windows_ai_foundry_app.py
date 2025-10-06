@@ -25,9 +25,17 @@ import re
 # Load environment variables
 load_dotenv()
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Feature flags for logging control
+ENABLE_DEBUG_LOGGING = os.getenv('ENABLE_DEBUG_LOGGING', 'false').lower() == 'true'
+ENABLE_FLASK_DEBUG = os.getenv('ENABLE_FLASK_DEBUG', 'false').lower() == 'true'
+
+# Configure logging based on feature flags
+log_level = logging.DEBUG if ENABLE_DEBUG_LOGGING else logging.WARNING
+logging.basicConfig(level=log_level)
 logger = logging.getLogger(__name__)
+
+# Reduce werkzeug (Flask) logging noise
+logging.getLogger('werkzeug').setLevel(logging.ERROR if not ENABLE_FLASK_DEBUG else logging.INFO)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'windows-ai-foundry-demo-secret')
@@ -680,4 +688,4 @@ if __name__ == '__main__':
     print("🚀 Windows AI Foundry Demo is ready!")
     print("="*60 + "\n")
     
-    socketio.run(app, host='0.0.0.0', port=5004, debug=False)
+    socketio.run(app, host='0.0.0.0', port=5004, debug=ENABLE_FLASK_DEBUG, log_output=ENABLE_FLASK_DEBUG)

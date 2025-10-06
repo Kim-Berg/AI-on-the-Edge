@@ -20,14 +20,23 @@ import requests
 from collections import deque
 import paho.mqtt.client as mqtt
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# Feature flags for logging control
+ENABLE_DEBUG_LOGGING = os.getenv('ENABLE_DEBUG_LOGGING', 'false').lower() == 'true'
+ENABLE_FLASK_DEBUG = os.getenv('ENABLE_FLASK_DEBUG', 'false').lower() == 'true'
+
+# Configure logging based on feature flags
+log_level = logging.DEBUG if ENABLE_DEBUG_LOGGING else logging.WARNING
+logging.basicConfig(level=log_level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Reduce werkzeug (Flask) logging noise
+logging.getLogger('werkzeug').setLevel(logging.ERROR if not ENABLE_FLASK_DEBUG else logging.INFO)
 
 try:
     from foundry_local import FoundryLocalManager
     FOUNDRY_SDK_AVAILABLE = True
-    logger.info("Foundry Local SDK available")
+    if ENABLE_DEBUG_LOGGING:
+        logger.info("Foundry Local SDK available")
 except ImportError:
     FOUNDRY_SDK_AVAILABLE = False
     logger.warning("Foundry Local SDK not available. Install with: pip install foundry-local-sdk")
@@ -1079,13 +1088,13 @@ def production_loop():
             time.sleep(0.5)  # Check more frequently when stopped
 
 if __name__ == '__main__':
-    logger.info("Starting Enhanced Edge AI Quality Control System...")
-    logger.info("🤖 Real Azure AI integration enabled!" if quality_system.ai_client else "📋 Running in simulation mode")
-    logger.info("Access dashboard at: http://localhost:5000")
+    print("Starting Enhanced Edge AI Quality Control System...")
+    print("🤖 Real Azure AI integration enabled!" if quality_system.ai_client else "📋 Running in simulation mode")
+    print("Access dashboard at: http://localhost:5000")
     
     # Start background production thread
     production_thread = threading.Thread(target=production_loop, daemon=True)
     production_thread.start()
     
     # Start the Flask app
-    socketio.run(app, host='0.0.0.0', port=5000, debug=False)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=ENABLE_FLASK_DEBUG, log_output=ENABLE_FLASK_DEBUG)

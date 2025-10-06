@@ -18,9 +18,17 @@ from concurrent.futures import ThreadPoolExecutor
 # Load environment variables
 load_dotenv()
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Feature flags for logging control
+ENABLE_DEBUG_LOGGING = os.getenv('ENABLE_DEBUG_LOGGING', 'false').lower() == 'true'
+ENABLE_FLASK_DEBUG = os.getenv('ENABLE_FLASK_DEBUG', 'false').lower() == 'true'
+
+# Configure logging based on feature flags
+log_level = logging.DEBUG if ENABLE_DEBUG_LOGGING else logging.WARNING
+logging.basicConfig(level=log_level)
 logger = logging.getLogger(__name__)
+
+# Reduce werkzeug (Flask) logging noise
+logging.getLogger('werkzeug').setLevel(logging.ERROR if not ENABLE_FLASK_DEBUG else logging.INFO)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
@@ -692,4 +700,4 @@ if __name__ == '__main__':
     print("🌐 Open http://localhost:5001 in your browser")
     print("💡 Tip: Model initialization may take several minutes for first-time downloads")
     
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=ENABLE_FLASK_DEBUG, host='0.0.0.0', port=5001)
