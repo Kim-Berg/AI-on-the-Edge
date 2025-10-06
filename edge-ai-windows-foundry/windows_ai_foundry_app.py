@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'windows-ai-foundry-demo-secret')
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 class WindowsAIFoundryManager:
     """Manages Windows AI Foundry models and AI capabilities"""
@@ -66,11 +66,12 @@ class WindowsAIFoundryManager:
         try:
             # Check for local AI services (Windows AI Foundry compatible)
             endpoints = [
-                ('http://localhost:52009', '/v1/models'), # Current Foundry Local service port
-                ('http://localhost:3928', '/health'),    # Default Azure AI Foundry Local port
-                ('http://localhost:1234', '/v1/models'), # LM Studio compatibility
-                ('http://localhost:11434', '/api/tags'), # Ollama compatibility  
-                ('http://localhost:8080', '/health')     # Alternative port
+                ('http://localhost:60632', '/v1/models'), # Foundry Local service port (dynamic)
+                ('http://localhost:52009', '/v1/models'), # Alternative Foundry Local service port
+                ('http://localhost:3928', '/health'),     # Default Azure AI Foundry Local port
+                ('http://localhost:1234', '/v1/models'),  # LM Studio compatibility
+                ('http://localhost:11434', '/api/tags'),  # Ollama compatibility  
+                ('http://localhost:8080', '/health')      # Alternative port
             ]
             
             for endpoint, health_path in endpoints:
@@ -98,11 +99,15 @@ class WindowsAIFoundryManager:
             except (subprocess.SubprocessError, FileNotFoundError):
                 pass
                 
-            raise Exception("Windows AI Foundry Local service not found. Please ensure the service is running.")
+            logger.warning("⚠️  Windows AI Foundry Local service not found")
+            logger.info("📋 Running in demonstration mode without AI service")
+            logger.info("💡 To enable real AI: Start Windows AI Foundry service")
+            # Don't raise exception - allow app to run in demo mode
             
         except Exception as e:
             logger.error(f"Error initializing Windows AI Foundry: {e}")
-            raise Exception(f"Failed to connect to Windows AI Foundry: {e}")
+            logger.info("📋 Continuing in demonstration mode")
+            # Don't raise - allow graceful degradation
             
     def _load_available_models(self):
         """Load available models from Windows AI Foundry"""

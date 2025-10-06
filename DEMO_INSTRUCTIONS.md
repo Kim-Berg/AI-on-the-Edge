@@ -2,10 +2,59 @@
 
 This workspace contains multiple AI demos showcasing local AI processing capabilities. Each demo demonstrates different aspects of edge computing and local AI inference.
 
-## 📋 Available Demos
+## 🎯 Quick Start - Run All Demos
+
+**Prerequisites:**
+- Python 3.8+ installed
+- **Foundry Local service** installed (for full functionality)
+  ```bash
+  # Install Foundry Local (if not already installed)
+  winget install Microsoft.AIFoundry
+  ```
+
+To start all demos at once with one command:
+
+```bash
+# Make scripts executable (first time only)
+chmod +x start_all_demos.sh stop_all_demos.sh
+
+# Start all demos (this will automatically start Foundry Local service if available)
+./start_all_demos.sh
+```
+
+**What the startup script does:**
+1. ✅ Checks if Foundry Local service is running
+2. 🚀 Starts Foundry Local service if not running (requires ~30 seconds to initialize)
+3. 🎯 Launches all 5 demos with their virtual environments
+
+**All demos will run on separate ports:**
+- 🤖 Azure Foundry Chat Playground: http://localhost:5000
+- � IoT Sensor Simulator: http://localhost:5001
+- 🔍 Quality Control System: http://localhost:5002
+- 📹 Smart Camera System: http://localhost:5003
+- 🪟 Windows AI Foundry Demo: http://localhost:5004
+
+### 🛑 Stopping All Demos
+
+```bash
+./stop_all_demos.sh
+```
+
+**Note:** On Windows, this will stop all Python processes. On Linux/macOS, it will only stop the demo processes.
+
+```
+- 🤖 Azure Foundry Chat Playground: http://localhost:5000
+- � IoT Sensor Simulator: http://localhost:5001
+- 🔍 Quality Control System: http://localhost:5002
+- 📹 Smart Camera System: http://localhost:5003
+- 🪟 Windows AI Foundry Demo: http://localhost:5004
+
+---
+
+## �📋 Available Demos
 
 ### 1. Windows AI Foundry Demo 🪟
-**Location**: `windows-ai-foundry-demo/`  
+**Location**: `edge-ai-windows-foundry/`  
 **Description**: Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains including text generation, code assistance, document analysis, creative writing, multimodal processing, reasoning, translation, and summarization
 
 ### 2. Azure Foundry Local Chat Playground 🤖
@@ -26,6 +75,25 @@ This workspace contains multiple AI demos showcasing local AI processing capabil
 
 ---
 
+## ⚙️ Important Notes
+
+### Virtual Environments
+Each demo uses its own virtual environment to avoid dependency conflicts:
+- `edge-ai-windows-foundry/venv/`
+- `edge-ai-iot-sensor/venv/`
+- `edge-ai-quality-control/venv/`
+- `edge-ai-smart-camera/venv/`
+
+The virtual environments are automatically activated by the startup scripts.
+
+### Python 3.13 Compatibility
+All demos have been updated to work with Python 3.13+:
+- Removed deprecated `eventlet` (replaced with `threading` mode for Flask-SocketIO)
+- Removed incompatible `threading2` package
+- Updated all dependencies to compatible versions
+
+---
+
 ## 🪟 Running the Windows AI Foundry Demo
 
 ### Prerequisites ✅
@@ -38,32 +106,50 @@ This workspace contains multiple AI demos showcasing local AI processing capabil
 2. **Windows AI Foundry Local** (Required - demo requires active Foundry service)
    ```bash
    # Windows Package Manager
-   winget install Microsoft.WindowsAIFoundry
+   winget install Microsoft.AIFoundry
    
    # Or download from Microsoft Store
    # Or visit: https://aka.ms/windows-ai-foundry
    ```
 
-3. **Start Windows AI Foundry Local Service** 🔧
-   ```bash
-   # Start the local AI service (required before running demo)
-   ai-foundry start
+3. **Foundry Local Service** 🔧
    
-   # Or start via Windows AI Foundry app interface
-   # Ensure service is running on port 3928 (default)
+   The startup script (`start_all_demos.sh`) will automatically:
+   - Check if Foundry Local is running
+   - Start the service if it's not running
+   - Wait for initialization (~30 seconds)
+   
+   **Manual start (if needed):**
+   ```bash
+   # Start the Foundry Local service
+   foundry service start
+   
+   # Check if service is running
+   foundry service status
+   
+   # Or check the ports (Foundry uses 52009 or 60632)
+   netstat -an | findstr "52009 60632"
    ```
 
 ### Quick Start 🚀
 
-**⚠️ IMPORTANT: Start Windows AI Foundry Local first!**
+**Option 1: Use the automated startup script (Recommended)**
 
-1. **Start Windows AI Foundry Local Service** (Required)
+```bash
+# From the main workspace directory
+./start_all_demos.sh
+```
+This will automatically start Foundry Local service and all demos.
+
+**Option 2: Manual start**
+
+1. **Start Foundry Local Service** (if not using automated script)
    ```bash
-   # Start the AI Foundry service first
-   ai-foundry start
+   # Start the Foundry service
+   foundry service start
    
-   # Verify it's running (should show service on port 52009)
-   netstat -an | find "52009"
+   # Wait for initialization (~30 seconds)
+   sleep 30
    ```
 
 2. **Navigate to the demo folder**

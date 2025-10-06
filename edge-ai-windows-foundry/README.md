@@ -2,6 +2,32 @@
 
 A comprehensive showcase of local AI capabilities running directly on Windows devices through the Windows AI Foundry platform.
 
+## ⚡ Quick Start
+
+**Automated (Recommended):**
+```bash
+# From main workspace directory
+./start_all_demos.sh
+```
+The script will automatically:
+- Check if Foundry Local service is running
+- Start Foundry Local if needed (waits 30s for initialization)
+- Launch the demo on http://localhost:5004
+
+**Manual:**
+```bash
+# 1. Start Foundry Local service
+foundry service start
+
+# 2. Wait for initialization
+sleep 30
+
+# 3. Start the demo
+cd edge-ai-windows-foundry
+source venv/Scripts/activate
+python windows_ai_foundry_app.py
+```
+
 ## 🚀 Features
 
 - **🤖 Multi-Model Support**: Access to 7 different AI models with real-time switching

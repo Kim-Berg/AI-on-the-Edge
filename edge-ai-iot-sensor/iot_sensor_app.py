@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'iot-sensor-demo-secret'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 class EquipmentSensor:
     """Represents a single piece of industrial equipment with sensors"""
@@ -362,9 +362,20 @@ def sensor_monitoring_loop():
             # Get equipment status
             equipment_status = iot_system.get_equipment_status()
             
+            # Convert datetime objects to ISO format strings in readings
+            readings_serializable = {}
+            for eq_id, reading in readings.items():
+                readings_serializable[eq_id] = {
+                    'timestamp': reading['timestamp'].isoformat() if isinstance(reading['timestamp'], datetime) else reading['timestamp'],
+                    'vibration': reading['vibration'],
+                    'temperature': reading['temperature'],
+                    'pressure': reading['pressure'],
+                    'current': reading['current']
+                }
+            
             # Emit real-time updates
             socketio.emit('sensor_update', {
-                'readings': readings,
+                'readings': readings_serializable,
                 'anomalies': anomalies,
                 'stats': stats,
                 'equipment_status': equipment_status,

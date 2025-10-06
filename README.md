@@ -60,15 +60,6 @@ Predictive maintenance for industrial equipment.
 - ⚠️ Real-time anomaly detection
 - 💰 Cost savings tracking
 
-## 🎯 Perfect for Your Edge AI Session
-
-These demos perfectly align with your session topics:
-
-### "Edge AI + IoT = Smart Devices"
-- ✅ **Quality Control**: Factory sensor detecting defects instantly
-- ✅ **Smart Camera**: Surveillance camera analyzing video locally  
-- ✅ **IoT Sensors**: Industrial equipment predicting maintenance needs
-
 ### Key Demo Benefits
 - 🚀 **Lightning Fast**: <100ms response times
 - 🔒 **Privacy First**: Data never leaves the device
