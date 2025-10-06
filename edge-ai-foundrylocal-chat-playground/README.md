@@ -1,57 +1,56 @@
 # Azure Foundry Local Chat Playground 🚀
 
-A cutting-edge multi-model AI chat application showcasing the power of **Azure Foundry Local**. Experience local AI processing with multiple models running simultaneously, real-time streaming responses, and beautiful side-by-side comparisons.
+A cutting-edge multi-model AI chat application showcasing the power of **Azure Foundry Local**. Experience local AI processing with multiple models running simultaneously, real-time streaming responses, and beautiful side-by-side comparisons via REST API integration.
 
 ![Azure Foundry Local Chat Playground](https://img.shields.io/badge/Azure-Foundry%20Local-blue) ![Python](https://img.shields.io/badge/Python-3.8+-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> 📖 **Quick Start**: See [../DEMO_INSTRUCTIONS.md](../DEMO_INSTRUCTIONS.md) for step-by-step setup guide. Foundry Local Chat Playground 🚀
-
-A cutting-edge multi-model AI chat application showcasing the power of **Azure Foundry Local**. Experience local AI processing with multiple models running simultaneously, real-time streaming responses, and beautiful side-by-side comparisons.
-
-![Azure Foundry Local Chat Playground](https://img.shields.io/badge/Azure-Foundry%20Local-blue) ![Python](https://img.shields.io/badge/Python-3.8+-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
-
-> � **Quick Start**: See [DEMO_INSTRUCTIONS.md](DEMO_INSTRUCTIONS.md) for step-by-step setup guide.
+> 📖 **Quick Start**: See [../DEMO_INSTRUCTIONS.md](../DEMO_INSTRUCTIONS.md) for step-by-step setup guide.
 
 ## 🌟 Features
 
 - **🤖 Multi-Model Chat**: Chat with multiple AI models simultaneously
-- **⚡ Real-time Streaming**: See responses as they're generated
-- **🔄 Model Comparison**: Compare responses side-by-side
+- **⚡ Real-time Streaming**: See responses as they're generated via REST API
+- **🔄 Model Comparison**: Compare responses side-by-side in real-time
 - **🏠 100% Local**: No cloud dependencies, complete privacy
 - **💬 Chat History**: Persistent conversation management
 - **🎨 Modern UI**: Beautiful, responsive web interface
-- **🚀 Easy Setup**: One-command installation and setup
+- **🚀 Easy Setup**: Automated setup with Foundry Local service
 - **📱 Mobile Friendly**: Works on desktop, tablet, and mobile
+- **🔌 REST API Integration**: Direct communication with Foundry Local service
 
 ## 🎬 Demo Features
 
-### Multi-Model AI Chat
+### Multi-Model AI Chat via REST API
 - Select and chat with multiple local AI models simultaneously
 - Compare responses from different models in real-time
-- Streaming responses for immediate feedback
+- Streaming responses via REST API for immediate feedback
+- Automatic model initialization on first use
 
 ### Supported Models
-- **Qwen 2.5 (0.5B)** - Lightweight, fast responses
-- **Phi-3.5 Mini** - Microsoft's efficient model
-- **Llama 3.2 (1B)** - Meta's balanced model
-- **Gemma 2 (2B)** - Google's versatile model
-- **Mistral 7B** - Creative and detailed responses
+- **qwen2.5-0.5b-instruct** - Lightweight, fast responses (500MB)
+- **Phi-3.5-mini-instruct** - Microsoft's efficient model (3.8GB)
+- **Llama-3.2-1B-Instruct** - Meta's balanced model (1.3GB)
+- **Llama-3.2-3B-Instruct** - Enhanced reasoning (3.2GB)
+- **gemma-2-2b-it** - Google's versatile model (2.6GB)
+- **Mistral-7B-Instruct-v0.3** - Creative and detailed responses (7GB)
 
 ### Interactive Features
-- 🔧 Dynamic model management and initialization
+- 🔧 Dynamic model management via REST API
 - 📊 Real-time system status monitoring
-- 🗑️ Conversation history management
+- 🗑️ Conversation history management with clear chat option
 - ⚙️ Configurable parameters (temperature, max tokens)
 - 📱 Responsive design for all devices
+- 🔌 Automatic Foundry Local service detection
+- ⚡ Real-time streaming responses
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-1. **Azure Foundry Local** - [Install Azure Foundry Local](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-local/get-started)
+1. **Azure Foundry Local** - Install Azure Foundry Local service
    ```bash
    # Windows
-   winget install Microsoft.FoundryLocal
+   winget install Microsoft.AIFoundry
    
    # macOS  
    brew tap microsoft/foundrylocal && brew install foundrylocal
@@ -59,25 +58,39 @@ A cutting-edge multi-model AI chat application showcasing the power of **Azure F
 
 2. **Python 3.8+** - [Download Python](https://www.python.org/downloads/)
 
-### Installation
+3. **Internet connection** - Required for initial model downloads only
 
-#### Option 1: Automatic Setup (Recommended)
+### Installation & Running
 
-**Windows:**
-```cmd
-setup.bat
-```
+#### Automated Setup (Recommended - From Main Workspace)
 
-**Linux/macOS:**
+From the main workspace directory, run:
 ```bash
-./setup.sh
+./start_all_demos.sh
 ```
 
-#### Option 2: Manual Setup
+This will:
+- Check and start Foundry Local service automatically
+- Set up the virtual environment
+- Install dependencies
+- Launch the chat playground on **http://localhost:5001**
 
-1. **Clone or download this repository**
+#### Manual Setup
 
-2. **Create virtual environment**
+1. **Start Foundry Local service**
+   ```bash
+   foundry service start
+   
+   # Verify it's running
+   foundry service status
+   ```
+
+2. **Navigate to the demo folder**
+   ```bash
+   cd edge-ai-foundrylocal-chat-playground
+   ```
+
+3. **Create and activate virtual environment**
    ```bash
    python -m venv venv
    
@@ -88,14 +101,9 @@ setup.bat
    source venv/bin/activate
    ```
 
-3. **Install dependencies**
+4. **Install dependencies**
    ```bash
    pip install -r requirements.txt
-   ```
-
-4. **Start Azure Foundry Local**
-   ```bash
-   foundry service start
    ```
 
 5. **Run the application**
@@ -103,100 +111,64 @@ setup.bat
    python foundry_app.py
    ```
 
-### Running the Application
-
-**Windows:**
-```cmd
-run.bat
-```
-
-**Linux/macOS:**
-```bash
-./run.sh
-```
-
-Then open http://localhost:5000 in your web browser! 🌐
+6. **Open your browser**  
+   Navigate to **http://localhost:5001** 🌐
 
 ## 🎯 Usage Guide
 
 ### Getting Started
 
-1. **Launch the application** using the run scripts
-2. **Select models** from the model panel (click to select/deselect)
-3. **Wait for initialization** - models will download on first use
-4. **Start chatting** - type your message and press Enter
-5. **Compare responses** - see how different models respond to the same prompt
+1. **Launch the application** - Access http://localhost:5001
+2. **Check connection status** - Green indicator means Foundry Local is connected
+3. **Select models** from the model panel (click to select/deselect, multiple selection supported)
+4. **Wait for initialization** - Models will download on first use (requires internet)
+5. **Start chatting** - Type your message and press Enter or click Send
+6. **Compare responses** - See how different models respond to the same prompt in real-time
 
-### Model Management
+### Model Status Indicators
 
-- **Green indicator**: Model ready to use
-- **Yellow indicator**: Model initializing
-- **Red indicator**: Model error
-- **Gray indicator**: Model not initialized
+- **🟢 Green**: Model ready to use
+- **🟡 Yellow**: Model initializing (downloading or loading)
+- **🔴 Red**: Model error (check logs or service status)
+- **⚪ Gray**: Model not initialized
 
 ### Tips for Best Experience
 
-- 🚀 **Start small**: Begin with lightweight models like Qwen 2.5 (0.5B)
-- ⚡ **Internet required**: First-time model downloads need internet
+- 🚀 **Start small**: Begin with lightweight models like qwen2.5-0.5b-instruct
+- ⚡ **Internet required**: First-time model downloads need internet connection
 - 💾 **Storage space**: Models require 0.5GB - 7GB each
-- 🔄 **Model switching**: You can change selected models anytime
-- 📱 **Mobile use**: Works great on mobile devices too!
+- 🔄 **Model switching**: You can change selected models anytime during chat
+- 📱 **Mobile use**: Fully responsive and works great on mobile devices
+- 🔌 **Service status**: Check Foundry Local service is running if models fail to load
+- 💬 **Clear chat**: Use the clear chat button to start fresh conversations
 
 ## 🛠️ Development
-
-### Development Mode
-
-Use the development helper script for advanced features:
-
-```bash
-# Start in development mode
-./scripts/dev.sh start
-
-# Check status
-./scripts/dev.sh status
-
-# Manage models
-./scripts/dev.sh models
-
-# Clean up
-./scripts/dev.sh clean
-```
 
 ### Project Structure
 
 ```
-foundry-chat-playground/
-├── foundry_app.py          # Main Flask application
+edge-ai-foundrylocal-chat-playground/
+├── foundry_app.py          # Main Flask application with REST API integration
 ├── requirements.txt        # Python dependencies
-├── .env                   # Environment configuration
-├── setup.sh/.bat          # Automated setup scripts
-├── run.sh/.bat            # Application launcher
-├── static/                # Web assets
+├── static/                 # Web assets
 │   ├── css/style.css      # Application styling
 │   └── js/app.js          # Frontend JavaScript
-├── templates/             # HTML templates
+├── templates/              # HTML templates
 │   └── index.html         # Main web interface
-├── scripts/               # Helper scripts
-│   └── dev.sh             # Development utilities
+├── API.md                 # API documentation
+├── TROUBLESHOOTING.md     # Troubleshooting guide
 └── README.md              # This file
 ```
 
-### Configuration
+### Dependencies
 
-Edit `.env` file to customize:
-
-```env
-# Default models to load
-DEFAULT_MODELS=qwen2.5-0.5b,phi-3.5-mini
-
-# API Configuration  
-MAX_TOKENS=1000
-TEMPERATURE=0.7
-
-# Chat Configuration
-MAX_HISTORY_MESSAGES=50
-ENABLE_STREAMING=true
-```
+Key dependencies from `requirements.txt`:
+- **flask==3.0.0** - Web framework
+- **openai==1.51.0** - OpenAI SDK for API compatibility
+- **foundry-local-sdk==1.0.0** - Foundry Local integration (optional)
+- **requests==2.31.0** - HTTP client for REST API calls
+- **websockets==12.0** - WebSocket support
+- **python-dotenv==1.0.0** - Environment variable management
 
 ## 🔧 Troubleshooting
 
@@ -204,140 +176,101 @@ ENABLE_STREAMING=true
 
 **"Foundry service not running"**
 ```bash
+# Start the service
 foundry service start
+
+# Check status
+foundry service status
+
+# Verify endpoint accessibility
+curl http://localhost:52009/v1/models
+# or
+curl http://localhost:60632/v1/models
 ```
 
 **"Model failed to initialize"**
-- Check internet connection (first download)
-- Verify sufficient disk space
-- Try restarting the Foundry service
+- Check internet connection (required for first download)
+- Verify sufficient disk space (models are 0.5GB - 7GB each)
+- Try restarting the Foundry service: `foundry service stop` then `foundry service start`
+- Check model availability: `foundry model list`
 
-**"Port 5000 already in use"**
-- Stop other applications using port 5000
-- Or modify the port in `foundry_app.py`
+**"Port 5001 already in use"**
+- Stop other applications using port 5001
+- Or modify the port in `foundry_app.py` (line 695): change `port=5001` to another port
 
-**"Import errors"**
-- Ensure virtual environment is activated
-- Run `pip install -r requirements.txt`
+**"Import errors or dependency issues"**
+- Ensure virtual environment is activated: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Linux/macOS)
+- Reinstall dependencies: `pip install -r requirements.txt`
+- Check Python version: `python --version` (needs 3.8+)
+
+**"Connection refused" errors**
+- Foundry Local service may not be running properly
+- Check if ports 52009 or 60632 are accessible
+- Restart Foundry Local service
 
 ### Getting Help
 
-1. **Check logs** - Error messages in the terminal
-2. **System status** - Click "Status" button in the web interface
+1. **Check logs** - Error messages appear in the terminal where you ran `python foundry_app.py`
+2. **System status** - The web interface shows connection status in real-time
 3. **Foundry Local docs** - [Official Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-local/)
-4. **Model management** - Use `foundry model list` and `foundry cache list`
+4. **Model management** - Use `foundry model list` to see available models
+5. **Check TROUBLESHOOTING.md** - More detailed troubleshooting guide in the project
 
-## 🎨 Customization
+## 📊 Model Performance
 
-### Adding New Models
-
-1. **Check available models**:
-   ```bash
-   foundry model list
-   ```
-
-2. **Add to the model list** in `foundry_app.py`:
-   ```python
-   def get_available_models(self):
-       return [
-           'qwen2.5-0.5b',
-           'phi-3.5-mini', 
-           'your-new-model'  # Add here
-       ]
-   ```
-
-3. **Add model description** in `static/js/app.js`:
-   ```javascript
-   getModelDescription(alias) {
-       const descriptions = {
-           'your-new-model': 'Description of your model'
-       };
-       return descriptions[alias] || 'Advanced AI model';
-   }
-   ```
-
-### Styling Customization
-
-Edit `static/css/style.css` to customize the appearance. The CSS uses CSS custom properties for easy theming:
-
-```css
-:root {
-    --primary-color: #0078d4;  /* Change primary color */
-    --bg-primary: #ffffff;     /* Change background */
-    /* ... other variables ... */
-}
-```
-
-## 📊 Performance Tips
-
-### Model Performance
+### Model Comparison
 
 | Model | Size | Speed | Quality | Best For |
 |-------|------|-------|---------|----------|
-| Qwen 2.5 (0.5B) | ~0.5GB | ⚡⚡⚡ | ⭐⭐ | Quick responses, testing |
-| Phi-3.5 Mini | ~2GB | ⚡⚡ | ⭐⭐⭐ | Reasoning, analysis |
-| Llama 3.2 (1B) | ~1GB | ⚡⚡ | ⭐⭐⭐ | Balanced performance |
-| Gemma 2 (2B) | ~2GB | ⚡ | ⭐⭐⭐⭐ | Detailed responses |
-| Mistral 7B | ~7GB | ⚡ | ⭐⭐⭐⭐⭐ | Creative writing |
+| qwen2.5-0.5b-instruct | ~0.5GB | ⚡⚡⚡ | ⭐⭐ | Quick responses, testing |
+| Phi-3.5-mini-instruct | ~3.8GB | ⚡⚡ | ⭐⭐⭐ | Reasoning, analysis |
+| Llama-3.2-1B-Instruct | ~1.3GB | ⚡⚡ | ⭐⭐⭐ | Balanced performance |
+| Llama-3.2-3B-Instruct | ~3.2GB | ⚡⚡ | ⭐⭐⭐⭐ | Enhanced reasoning |
+| gemma-2-2b-it | ~2.6GB | ⚡ | ⭐⭐⭐⭐ | Detailed responses |
+| Mistral-7B-Instruct-v0.3 | ~7GB | ⚡ | ⭐⭐⭐⭐⭐ | Creative writing |
 
 ### Hardware Recommendations
 
-- **Minimum**: 8GB RAM, 3GB free disk space
-- **Recommended**: 16GB RAM, 15GB free disk space
-- **Optimal**: 32GB RAM, SSD storage, GPU acceleration
+- **Minimum**: 8GB RAM, 3GB free disk space, 2-core CPU
+- **Recommended**: 16GB RAM, 15GB free disk space, 4-core CPU
+- **Optimal**: 32GB RAM, 30GB+ SSD storage, 8-core CPU, GPU acceleration
 
-## 🚀 Advanced Features
+## 🚀 Technical Details
 
-### API Endpoints
+### REST API Integration
 
-The application exposes REST APIs for integration:
+The application communicates with Foundry Local via REST API:
+- **Endpoint Detection**: Automatically detects Foundry Local on ports 52009 or 60632
+- **Model Management**: Lists available models via `/v1/models` endpoint
+- **Chat Completion**: Sends prompts via `/v1/chat/completions` endpoint
+- **Streaming Support**: Real-time responses using streaming completions
 
-- `GET /api/models/available` - List available models
-- `POST /api/models/initialize` - Initialize a model
-- `POST /api/chat` - Send chat message
-- `POST /api/chat/stream` - Stream chat responses
-- `GET /api/status` - System status
-- `GET /api/history` - Chat history
+### Architecture
 
-### Streaming API
-
-Use Server-Sent Events for real-time streaming:
-
-```javascript
-const eventSource = new EventSource('/api/chat/stream');
-eventSource.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    // Handle streaming data
-};
+```
+[Web Browser] ←→ [Flask App (Port 5001)]
+                       ↓
+                 [REST API Client]
+                       ↓
+            [Foundry Local Service]
+            (Port 52009 or 60632)
+                       ↓
+                [AI Models (Local)]
 ```
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 🙏 Acknowledgments
-
-- **Microsoft** for Azure Foundry Local
-- **OpenAI** for the API compatibility layer
-- **Meta, Google, Mistral** for their open models
-- The open-source community for inspiration
-
 ## 📚 Learn More
 
 - [Azure Foundry Local Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-local/)
 - [Azure AI Foundry](https://azure.microsoft.com/en-us/products/ai-foundry/)
-- [Local AI Development Best Practices](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-local/concepts/)
+- [API Documentation](./API.md) - Detailed API documentation for this project
+- [Troubleshooting Guide](./TROUBLESHOOTING.md) - Comprehensive troubleshooting
 
 ---
 
-**Built with ❤️ using Azure Foundry Local**
+**Built with ❤️ using Azure Foundry Local and REST API**
 
-*Experience the power of local AI processing with the convenience of cloud-scale models!*
+*Experience the power of local AI processing with multiple models running simultaneously!*

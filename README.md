@@ -8,85 +8,141 @@ Welcome to the Edge AI demo collection! These demos showcase how to run AI model
 
 ## 📋 Available Demos
 
-### 1. Windows AI Foundry Demo 🪟
-**Path**: `windows-ai-foundry-demo/`  
-**URL**: http://localhost:5004
-
-Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
-- 🤖 Real AI processing with 7+ models
-- 📝 Text generation & creative writing
-- 💻 Code assistance & development help
-- 📄 Document analysis & summarization
-- 🔄 Intelligent timeout & retry handling
-- 🔌 Real-time connection monitoring
-
-### 2. Azure Foundry Local Chat 🤖
-**Path**: `edge-ai-foundrylocal-chat-playground/`  
-**URL**: http://localhost:5003
-
-Multi-model AI chat application with real-time streaming.
-- 💬 Interactive chat interface
-- 🔄 Model comparison capabilities
-- ⚡ Real-time response streaming
-- 📊 Performance analytics
-
-### 3. Quality Control System 🔍
+### 1. Quality Control System 🔍
 **Path**: `edge-ai-quality-control/`  
 **URL**: http://localhost:5000
 
-Real-time defect detection for manufacturing quality control.
-- ⚡ <100ms inference time
-- 🔍 Image-based defect detection  
-- 📊 Live quality metrics dashboard
-- 🏭 Factory integration simulation
+AI-powered quality control with Azure AI Foundry Local integration.
+- 🤖 Real Azure AI model integration for defect analysis
+- �️ Vision analysis with multimodal AI models
+- ⚡ Real-time defect detection and processing
+- � Live quality metrics dashboard
+- 🔄 Intelligent fallback to simulation mode
+- 🏭 Manufacturing production simulation
 
-### 4. Smart Surveillance Camera 📹
-**Path**: `edge-ai-smart-camera/`  
+### 2. Azure Foundry Local Chat 🤖
+**Path**: `edge-ai-foundrylocal-chat-playground/`  
 **URL**: http://localhost:5001
 
-Intelligent video surveillance with edge AI processing.
-- 🎥 Live video analysis
-- 👥 Person detection & tracking
-- 🚨 Anomaly & loitering detection
-- 🔒 Privacy-preserving (local processing)
+Multi-model AI chat application with real-time streaming via REST API.
+- 💬 Interactive chat with multiple AI models simultaneously
+- 🔄 Side-by-side model comparison
+- ⚡ Real-time response streaming
+- 🏠 100% local processing via Foundry Local service
+- 📊 Chat history management
+- 🤖 Supports Qwen, Phi, Llama, Gemma, Mistral models
 
-### 5. Industrial IoT Sensors 📡
-**Path**: `edge-ai-iot-sensor/`  
+### 3. Smart Surveillance Camera 📹
+**Path**: `edge-ai-smart-camera/`  
 **URL**: http://localhost:5002
 
-Predictive maintenance for industrial equipment.
-- 🏭 Equipment health monitoring
-- 🔮 Predictive maintenance AI
-- ⚠️ Real-time anomaly detection
-- 💰 Cost savings tracking
+Intelligent video surveillance with edge AI processing.
+- 🎥 Real-time object detection (people, vehicles, objects)
+- 👥 Person tracking and counting
+- 🚨 Anomaly detection and loitering alerts
+- 🔒 Privacy-preserving local processing
+- ⚡ <50ms detection latency
+- 📊 Live statistics and security event logging
+
+### 4. Industrial IoT Sensors 📡
+**Path**: `edge-ai-iot-sensor/`  
+**URL**: http://localhost:5003
+
+Predictive maintenance for industrial equipment using edge AI.
+- 🏭 Multi-equipment health monitoring
+- 🔮 ML-based predictive maintenance (Isolation Forest)
+- ⚠️ Real-time anomaly detection on sensor data
+- � Time-series analysis (vibration, temperature, pressure)
+- �💰 Cost savings tracking and ROI calculations
+- 📊 Live dashboard with equipment status
+
+### 5. Windows AI Foundry Demo 🪟
+**Path**: `edge-ai-windows-foundry/`  
+**URL**: http://localhost:5004
+
+Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
+- 🤖 Real AI processing with 7+ local models
+- 📝 Text generation & creative writing
+- 💻 Code assistance & development help
+- 📄 Document analysis & summarization
+- 🧠 Advanced reasoning capabilities
+- 🌍 Translation and multimodal analysis
+- 🔄 Intelligent timeout & retry handling
+- 🔌 Real-time connection monitoring
 
 ### Key Demo Benefits
-- 🚀 **Lightning Fast**: <100ms response times
-- 🔒 **Privacy First**: Data never leaves the device
-- 💰 **Cost Effective**: No cloud bandwidth costs
-- 🔋 **Always On**: Works during internet outages
-- 📈 **Scalable**: Deploy across hundreds of devices
+- 🚀 **Lightning Fast**: <100ms response times for critical applications
+- 🔒 **Privacy First**: All data processed locally, never leaves the device
+- 💰 **Cost Effective**: No cloud bandwidth or API costs
+- 🔋 **Always On**: Full functionality during internet outages
+- 📈 **Scalable**: Deploy independently across hundreds of devices
+- 🤖 **Real AI**: Powered by Azure AI Foundry Local with actual AI models
 
-## 🎤 Session Integration
+## 🎤 Demo Presentation Guide
 
-### Demo Flow (15 minutes total)
-1. **Quality Control** (5 min) - Show real-time defect detection
-2. **Smart Camera** (5 min) - Demonstrate video analytics  
-3. **IoT Sensors** (5 min) - Present predictive maintenance
+### Suggested Demo Flow (15-20 minutes)
+1. **Overview** (2 min) - Introduce edge AI concept and demo collection
+2. **Quality Control** (5 min) - Show Azure AI integration and defect detection
+3. **Smart Camera** (4 min) - Demonstrate video analytics and object detection
+4. **IoT Sensors** (4 min) - Present predictive maintenance and anomaly detection
+5. **Windows AI Foundry** (3 min) - Showcase comprehensive AI capabilities
+6. **Q&A** (2 min) - Address questions
 
-### Talking Points
-- Compare edge vs cloud latency
-- Show offline capability (disconnect internet)
-- Highlight privacy benefits (local processing)
-- Demonstrate cost savings calculations
+### Key Talking Points
+- **Latency comparison**: Edge (<100ms) vs Cloud (200-500ms)
+- **Privacy & Compliance**: Data never leaves premises
+- **Offline capability**: Disconnect internet to show continued operation
+- **Cost savings**: No per-request API fees, reduced bandwidth costs
+- **Real AI models**: Actual Azure AI Foundry Local integration, not simulation
+- **Industrial applications**: Manufacturing, IoT, surveillance use cases
 
 ## 🛠️ Technical Stack
 
 - **Edge AI**: Lightweight ML models optimized for edge devices
+- **Azure AI Foundry Local**: Local AI model serving and inference
 - **Real-time Processing**: <100ms inference using local compute
-- **Industrial Protocols**: MQTT, OPC-UA simulation
-- **Web Dashboard**: Real-time visualization and monitoring
-- **Cross-Platform**: Works on Windows, Mac, Linux
+- **Computer Vision**: OpenCV, YOLO, MobileNet SSD for object detection
+- **Machine Learning**: scikit-learn (Isolation Forest) for anomaly detection
+- **Industrial Protocols**: MQTT, simulated OPC-UA integration
+- **Web Framework**: Flask with SocketIO for real-time updates
+- **Frontend**: Modern responsive HTML/CSS/JavaScript
+- **Cross-Platform**: Works on Windows, macOS, Linux
+
+## 📦 Prerequisites
+
+- **Python 3.8+** - Required for all demos
+- **Windows AI Foundry Local** - Required for full AI capabilities
+  ```bash
+  winget install Microsoft.AIFoundry
+  ```
+- **Git** - For cloning the repository
+- **Virtual Environment Support** - Python venv (included with Python)
+
+## 🚀 Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd "AI on the Edge"
+   ```
+
+2. **Start all demos at once**
+   ```bash
+   # Make scripts executable (first time only - Linux/macOS)
+   chmod +x start_all_demos.sh stop_all_demos.sh
+   
+   # Start all demos
+   ./start_all_demos.sh
+   ```
+
+3. **Access the demos** - Open your browser to the URLs listed above
+
+4. **Stop all demos**
+   ```bash
+   ./stop_all_demos.sh
+   ```
+
+For detailed setup instructions, see **[DEMO_INSTRUCTIONS.md](./DEMO_INSTRUCTIONS.md)**
 
 ## 📚 Learn More
 

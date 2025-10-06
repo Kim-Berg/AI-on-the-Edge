@@ -28,10 +28,10 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 3. 🎯 Launches all 5 demos with their virtual environments
 
 **All demos will run on separate ports:**
-- 🤖 Azure Foundry Chat Playground: http://localhost:5000
-- � IoT Sensor Simulator: http://localhost:5001
-- 🔍 Quality Control System: http://localhost:5002
-- 📹 Smart Camera System: http://localhost:5003
+- 🔍 Quality Control System: http://localhost:5000
+- 🤖 Azure Foundry Chat Playground: http://localhost:5001
+- � Smart Camera System: http://localhost:5002
+- � IoT Sensor Simulator: http://localhost:5003
 - 🪟 Windows AI Foundry Demo: http://localhost:5004
 
 ### 🛑 Stopping All Demos
@@ -42,36 +42,34 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 
 **Note:** On Windows, this will stop all Python processes. On Linux/macOS, it will only stop the demo processes.
 
-```
-- 🤖 Azure Foundry Chat Playground: http://localhost:5000
-- � IoT Sensor Simulator: http://localhost:5001
-- 🔍 Quality Control System: http://localhost:5002
-- 📹 Smart Camera System: http://localhost:5003
-- 🪟 Windows AI Foundry Demo: http://localhost:5004
-
 ---
 
-## �📋 Available Demos
+## 📋 Available Demos
 
-### 1. Windows AI Foundry Demo 🪟
-**Location**: `edge-ai-windows-foundry/`  
-**Description**: Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains including text generation, code assistance, document analysis, creative writing, multimodal processing, reasoning, translation, and summarization
+### 1. Quality Control System 🔍
+**Location**: `edge-ai-quality-control/`  
+**Port**: http://localhost:5000  
+**Description**: AI-powered quality control with Azure AI Foundry Local integration for defect detection using computer vision and machine learning
 
 ### 2. Azure Foundry Local Chat Playground 🤖
 **Location**: `edge-ai-foundrylocal-chat-playground/`  
-**Description**: Multi-model AI chat application with real-time streaming and model comparison
+**Port**: http://localhost:5001  
+**Description**: Multi-model AI chat application with real-time streaming via REST API, supporting side-by-side model comparison
 
-### 3. IoT Sensor Simulator 📡  
-**Location**: `edge-ai-iot-sensor/`  
-**Description**: Simulates IoT sensor data with AI-powered analytics
-
-### 4. Quality Control System 🔍
-**Location**: `edge-ai-quality-control/`  
-**Description**: AI-powered quality control for manufacturing
-
-### 5. Smart Camera System 📹
+### 3. Smart Camera System �
 **Location**: `edge-ai-smart-camera/`  
-**Description**: Computer vision application for object detection
+**Port**: http://localhost:5002  
+**Description**: Computer vision application for real-time object detection, person tracking, and anomaly detection
+
+### 4. IoT Sensor Simulator �  
+**Location**: `edge-ai-iot-sensor/`  
+**Port**: http://localhost:5003  
+**Description**: Industrial IoT sensor simulation with AI-powered predictive maintenance and anomaly detection
+
+### 5. Windows AI Foundry Demo 🪟
+**Location**: `edge-ai-windows-foundry/`  
+**Port**: http://localhost:5004  
+**Description**: Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains including text generation, code assistance, document analysis, creative writing, multimodal processing, reasoning, translation, and summarization
 
 ---
 
@@ -79,12 +77,13 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 
 ### Virtual Environments
 Each demo uses its own virtual environment to avoid dependency conflicts:
-- `edge-ai-windows-foundry/venv/`
+- `edge-ai-foundrylocal-chat-playground/venv/`
 - `edge-ai-iot-sensor/venv/`
 - `edge-ai-quality-control/venv/`
 - `edge-ai-smart-camera/venv/`
+- `edge-ai-windows-foundry/venv/`
 
-The virtual environments are automatically activated by the startup scripts.
+The virtual environments are automatically created and activated by the startup scripts.
 
 ### Python 3.13 Compatibility
 All demos have been updated to work with Python 3.13+:
@@ -294,21 +293,23 @@ This will automatically start Foundry Local service and all demos.
    ```
 
 5. **Access the Demo**  
-   Open your web browser: **http://localhost:5000**
+   Open your web browser: **http://localhost:5001**
 
 ### Using the Chat Playground 🎮
 
-1. **Select Models**: Click on model tiles to select/deselect them
-2. **Initialize Models**: Selected models will automatically initialize (may take a few moments)
-3. **Start Chatting**: Type your message and press Enter
-4. **Compare Responses**: See how different AI models respond to the same prompt
+1. **Check Connection**: Verify the Foundry Local service is connected (green indicator)
+2. **Select Models**: Click on model tiles to select/deselect them (multiple selection supported)
+3. **Initialize Models**: Selected models will automatically initialize (may take a few moments for first-time download)
+4. **Start Chatting**: Type your message in the chat input and press Enter or click Send
+5. **Compare Responses**: See how different AI models respond to the same prompt in real-time
 
 ### Available Models 🤖
-- **Qwen 2.5 (0.5B)** - Lightweight, fast responses
-- **Phi-3.5 Mini** - Microsoft's efficient model  
-- **Llama 3.2 (1B)** - Meta's balanced model
-- **Gemma 2 (2B)** - Google's versatile model
-- **Mistral 7B** - Creative and detailed responses
+- **qwen2.5-0.5b-instruct** - Lightweight, fast responses
+- **Phi-3.5-mini-instruct** - Microsoft's efficient model  
+- **Llama-3.2-1B-Instruct** - Meta's balanced model
+- **Llama-3.2-3B-Instruct** - Enhanced reasoning
+- **gemma-2-2b-it** - Google's versatile model
+- **Mistral-7B-Instruct-v0.3** - Creative and detailed responses
 
 ---
 
@@ -328,9 +329,14 @@ This will automatically start Foundry Local service and all demos.
 - Ensure Azure Foundry Local service is running: `foundry service start`
 - Check service status: `foundry service status`
 
-**Port 5000 already in use**
-- Stop other applications using port 5000
-- Or modify the port in `foundry_app.py`
+**Port already in use**
+- Check which demo uses which port:
+  - Quality Control: 5000
+  - Foundry Chat: 5001
+  - Smart Camera: 5002
+  - IoT Sensor: 5003
+  - Windows Foundry: 5004
+- Stop conflicting applications or modify the port in the app's Python file
 
 **Import/dependency errors**
 - Verify all dependencies are installed: `pip install -r requirements.txt`
