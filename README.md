@@ -1,4 +1,16 @@
-# Edge AI Demo Collection
+# Edge AI DemoAI-powered quality control with Azure AI FPredictive maintenance for industrial equipment using edge AI.
+- 🏭 Multi-equipment health monitoring
+- 🔮 ML-based predictive maintenance (Isolation Forest)
+- ⚠️ Anomaly detection on sensor data
+- 📈 Time-series analysis (vibration, temperature, pressure)
+- 💰 Cost savings tracking and ROI calculations
+- 📊 Live dashboard with equipment statusLocal integration.
+- 🤖 Azure AI model integration for defect analysis
+- 👁️ Vision analysis with multimodal AI models
+- ⚡ Defect detection and processing
+- 📊 Live quality metrics dashboard
+- 🔄 Fallback to simulation mode when AI service unavailable
+- 🏭 Manufacturing production simulationtion
 
 Welcome to the Edge AI demo collection! These demos showcase how to run AI models locally on edge devices for industrial IoT applications.
 
@@ -24,11 +36,11 @@ AI-powered quality control with Azure AI Foundry Local integration.
 **Path**: `edge-ai-foundrylocal-chat-playground/`  
 **URL**: http://localhost:5001
 
-Multi-model AI chat application with real-time streaming via REST API.
+Multi-model AI chat application with streaming via REST API.
 - 💬 Interactive chat with multiple AI models simultaneously
 - 🔄 Side-by-side model comparison
-- ⚡ Real-time response streaming
-- 🏠 100% local processing via Foundry Local service
+- ⚡ Response streaming
+- 🏠 Local processing via Foundry Local service
 - 📊 Chat history management
 - 🤖 Supports Qwen, Phi, Llama, Gemma, Mistral models
 
@@ -37,11 +49,11 @@ Multi-model AI chat application with real-time streaming via REST API.
 **URL**: http://localhost:5002
 
 Intelligent video surveillance with edge AI processing.
-- 🎥 Real-time object detection (people, vehicles, objects)
+- 🎥 Object detection (people, vehicles, objects)
 - 👥 Person tracking and counting
 - 🚨 Anomaly detection and loitering alerts
 - 🔒 Privacy-preserving local processing
-- ⚡ <50ms detection latency
+- ⚡ Low-latency detection on edge devices
 - 📊 Live statistics and security event logging
 
 ### 4. Industrial IoT Sensors 📡
@@ -61,22 +73,22 @@ Predictive maintenance for industrial equipment using edge AI.
 **URL**: http://localhost:5004
 
 Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
-- 🤖 Real AI processing with 7+ local models
+- 🤖 AI processing with 7+ local models
 - 📝 Text generation & creative writing
 - 💻 Code assistance & development help
 - 📄 Document analysis & summarization
 - 🧠 Advanced reasoning capabilities
 - 🌍 Translation and multimodal analysis
-- 🔄 Intelligent timeout & retry handling
-- 🔌 Real-time connection monitoring
+- 🔄 Timeout & retry handling
+- 🔌 Connection monitoring
 
 ### Key Demo Benefits
-- 🚀 **Lightning Fast**: <100ms response times for critical applications
-- 🔒 **Privacy First**: All data processed locally, never leaves the device
+- 🚀 **Fast Processing**: Low-latency response times with local inference
+- 🔒 **Privacy First**: Data processed locally, doesn't leave the device
 - 💰 **Cost Effective**: No cloud bandwidth or API costs
-- 🔋 **Always On**: Full functionality during internet outages
-- 📈 **Scalable**: Deploy independently across hundreds of devices
-- 🤖 **Real AI**: Powered by Azure AI Foundry Local with actual AI models
+- 🔋 **Offline Capable**: Functionality during internet outages
+- 📈 **Scalable**: Deploy independently across multiple devices
+- 🤖 **Local AI**: Powered by Azure AI Foundry Local with AI models
 
 ## 🎤 Demo Presentation Guide
 
@@ -89,23 +101,22 @@ Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
 6. **Q&A** (2 min) - Address questions
 
 ### Key Talking Points
-- **Latency comparison**: Edge (<100ms) vs Cloud (200-500ms)
-- **Privacy & Compliance**: Data never leaves premises
+- **Latency comparison**: Edge processing reduces latency vs cloud roundtrip
+- **Privacy & Compliance**: Data processed locally on premises
 - **Offline capability**: Disconnect internet to show continued operation
 - **Cost savings**: No per-request API fees, reduced bandwidth costs
-- **Real AI models**: Actual Azure AI Foundry Local integration, not simulation
+- **Local AI models**: Azure AI Foundry Local integration
 - **Industrial applications**: Manufacturing, IoT, surveillance use cases
 
 ## 🛠️ Technical Stack
 
 - **Edge AI**: Lightweight ML models optimized for edge devices
 - **Azure AI Foundry Local**: Local AI model serving and inference
-- **Real-time Processing**: <100ms inference using local compute
 - **Computer Vision**: OpenCV, YOLO, MobileNet SSD for object detection
 - **Machine Learning**: scikit-learn (Isolation Forest) for anomaly detection
 - **Industrial Protocols**: MQTT, simulated OPC-UA integration
-- **Web Framework**: Flask with SocketIO for real-time updates
-- **Frontend**: Modern responsive HTML/CSS/JavaScript
+- **Web Framework**: Flask with SocketIO for updates
+- **Frontend**: Responsive HTML/CSS/JavaScript
 - **Cross-Platform**: Works on Windows, macOS, Linux
 
 ## 📦 Prerequisites

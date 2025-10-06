@@ -1,18 +1,18 @@
 # Edge AI Smart Surveillance Camera 📹
 
 ## Overview
-This demo showcases an intelligent surveillance camera system that runs AI models locally on edge devices. The system performs real-time object detection, person tracking, and anomaly detection without requiring cloud connectivity.
+This demo showcases an intelligent surveillance camera system that runs AI models locally on edge devices. The system performs object detection, person tracking, and anomaly detection without requiring cloud connectivity.
 
 **Port**: http://localhost:5002
 
 ## Key Features
-- **🎥 Real-time Object Detection**: Identifies people, vehicles, and objects instantly using computer vision
-- **⚡ Ultra-Low Latency**: <50ms detection to alert generation
+- **🎥 Object Detection**: Identifies people, vehicles, and objects using computer vision
+- **⚡ Low Latency**: Fast detection to alert generation on edge devices
 - **🚶 Person Tracking**: Follows individuals across camera frames with unique IDs
 - **🚨 Anomaly Detection**: Spots unusual behavior patterns and potential security threats
 - **🔒 Privacy-First**: All processing happens locally - no video sent to cloud
 - **⚡ Edge Optimization**: Lightweight models optimized for edge hardware
-- **📊 Live Statistics**: Real-time detection counts and FPS monitoring
+- **📊 Live Statistics**: Detection counts and FPS monitoring
 - **🎯 Zone Monitoring**: Configurable detection areas for enhanced surveillance
 - **💾 Event Logging**: Security event history with timestamps
 - **📈 Performance Metrics**: Processing time tracking and analytics
@@ -44,7 +44,7 @@ Perfect for various security and monitoring scenarios:
 6. **🏠 Smart Home Security**: Intruder detection, package monitoring, pet tracking
 
 ## Real-World Benefits
-- **⚡ Ultra-Low Latency**: Instant response without cloud round-trips (<50ms)
+- **⚡ Low Latency**: Fast response without cloud round-trips
 - **🔒 Privacy Compliant**: Video never leaves the premises (GDPR, HIPAA compliant)
 - **💰 Cost Effective**: No bandwidth costs for video streaming to cloud
 - **🔋 Always Available**: Works during internet outages and network failures

@@ -1,6 +1,6 @@
 # Azure Foundry Local Chat Playground 🚀
 
-A cutting-edge multi-model AI chat application showcasing the power of **Azure Foundry Local**. Experience local AI processing with multiple models running simultaneously, real-time streaming responses, and beautiful side-by-side comparisons via REST API integration.
+A multi-model AI chat application showcasing **Azure Foundry Local**. Experience local AI processing with multiple models running simultaneously, streaming responses, and side-by-side comparisons via REST API integration.
 
 ![Azure Foundry Local Chat Playground](https://img.shields.io/badge/Azure-Foundry%20Local-blue) ![Python](https://img.shields.io/badge/Python-3.8+-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -9,11 +9,11 @@ A cutting-edge multi-model AI chat application showcasing the power of **Azure F
 ## 🌟 Features
 
 - **🤖 Multi-Model Chat**: Chat with multiple AI models simultaneously
-- **⚡ Real-time Streaming**: See responses as they're generated via REST API
-- **🔄 Model Comparison**: Compare responses side-by-side in real-time
-- **🏠 100% Local**: No cloud dependencies, complete privacy
+- **⚡ Streaming Responses**: See responses as they're generated via REST API
+- **🔄 Model Comparison**: Compare responses side-by-side
+- **🏠 Local Processing**: No cloud dependencies, complete privacy
 - **💬 Chat History**: Persistent conversation management
-- **🎨 Modern UI**: Beautiful, responsive web interface
+- **🎨 Modern UI**: Responsive web interface
 - **🚀 Easy Setup**: Automated setup with Foundry Local service
 - **📱 Mobile Friendly**: Works on desktop, tablet, and mobile
 - **🔌 REST API Integration**: Direct communication with Foundry Local service
@@ -22,7 +22,7 @@ A cutting-edge multi-model AI chat application showcasing the power of **Azure F
 
 ### Multi-Model AI Chat via REST API
 - Select and chat with multiple local AI models simultaneously
-- Compare responses from different models in real-time
+- Compare responses from different models
 - Streaming responses via REST API for immediate feedback
 - Automatic model initialization on first use
 
@@ -36,12 +36,12 @@ A cutting-edge multi-model AI chat application showcasing the power of **Azure F
 
 ### Interactive Features
 - 🔧 Dynamic model management via REST API
-- 📊 Real-time system status monitoring
+- 📊 System status monitoring
 - 🗑️ Conversation history management with clear chat option
 - ⚙️ Configurable parameters (temperature, max tokens)
 - 📱 Responsive design for all devices
 - 🔌 Automatic Foundry Local service detection
-- ⚡ Real-time streaming responses
+- ⚡ Streaming responses
 
 ## 🚀 Quick Start
 
@@ -123,7 +123,7 @@ This will:
 3. **Select models** from the model panel (click to select/deselect, multiple selection supported)
 4. **Wait for initialization** - Models will download on first use (requires internet)
 5. **Start chatting** - Type your message and press Enter or click Send
-6. **Compare responses** - See how different models respond to the same prompt in real-time
+6. **Compare responses** - See how different models respond to the same prompt
 
 ### Model Status Indicators
 

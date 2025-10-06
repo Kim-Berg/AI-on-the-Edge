@@ -1,19 +1,19 @@
 # 🤖 Azure AI Quality Control Demo
 
-An AI-powered quality control system for manufacturing that integrates with **Azure AI Foundry Local** for real-time defect detection using computer vision and machine learning.
+An AI-powered quality control system for manufacturing that integrates with **Azure AI Foundry Local** for defect detection using computer vision and machine learning.
 
 **Port**: http://localhost:5000
 
 ## 🌟 Features
 
-- **🤖 Real AI Integration**: Uses Azure AI Foundry Local for actual defect analysis
+- **🤖 AI Integration**: Uses Azure AI Foundry Local for defect analysis
 - **👁️ Vision Analysis**: Supports multimodal AI models for image inspection  
-- **⚡ Real-time Processing**: Live defect detection with SocketIO updates
-- **📊 Smart Dashboard**: Web interface with live statistics and AI status
-- **🔄 Intelligent Fallback**: Graceful simulation mode when AI unavailable
+- **⚡ Processing**: Live defect detection with SocketIO updates
+- **📊 Dashboard**: Web interface with live statistics and AI status
+- **🔄 Fallback Mode**: Graceful simulation mode when AI unavailable
 - **🎯 Production Simulation**: Realistic manufacturing production flow
 - **💾 MQTT Integration**: Industrial protocol support for IoT integration
-- **📈 Quality Metrics**: Real-time pass/fail rates and defect tracking
+- **📈 Quality Metrics**: Pass/fail rates and defect tracking
 - **🏭 Batch Processing**: Simulates continuous production batches
 
 ## 🚀 Quick Start
@@ -124,11 +124,11 @@ The demo attempts to use available Foundry Local models:
 6. **Stop**: Press `Ctrl+C` in terminal or click "Stop Production"
 
 ### Dashboard Features
-- **Real-time Statistics**: Total processed, defects found, pass/fail rates
+- **Statistics**: Total processed, defects found, pass/fail rates
 - **Batch Progress**: Current batch number and item progress
 - **AI Status Indicator**: Shows connection status to Foundry Local
 - **Recent Results**: Scrolling list of recent inspection results
-- **Live Updates**: WebSocket-powered real-time updates
+- **Live Updates**: WebSocket-powered updates
 
 ## 📁 Project Structure
 

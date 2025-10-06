@@ -32,37 +32,66 @@ else
 fi
 echo ""
 
+# Function to setup and activate venv for a demo
+setup_demo_venv() {
+    local demo_dir="$1"
+    local demo_name="$2"
+    
+    cd "$SCRIPT_DIR/$demo_dir"
+    
+    # Check if venv exists
+    if [ ! -d "venv" ]; then
+        echo "   📦 Creating virtual environment for $demo_name..."
+        python -m venv venv
+        
+        # Activate venv and install requirements
+        if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
+            source venv/Scripts/activate
+        else
+            source venv/bin/activate
+        fi
+        
+        echo "   📥 Installing dependencies for $demo_name..."
+        pip install --quiet --upgrade pip
+        pip install --quiet -r requirements.txt
+        echo "   ✅ Setup complete for $demo_name"
+    else
+        # Just activate existing venv
+        if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
+            source venv/Scripts/activate
+        else
+            source venv/bin/activate
+        fi
+    fi
+}
+
 # Start Azure Foundry Chat Playground (Port 5000)
 echo "📱 Starting Azure Foundry Chat Playground on port 5000..."
-cd "$SCRIPT_DIR/edge-ai-foundrylocal-chat-playground"
+setup_demo_venv "edge-ai-foundrylocal-chat-playground" "Azure Foundry Chat Playground"
 python foundry_app.py &
 FOUNDRY_PID=$!
 
 # Start IoT Sensor Simulator (Port 5001)
 echo "📡 Starting IoT Sensor Simulator on port 5001..."
-cd "$SCRIPT_DIR/edge-ai-iot-sensor"
-source venv/Scripts/activate
+setup_demo_venv "edge-ai-iot-sensor" "IoT Sensor Simulator"
 python iot_sensor_app.py &
 IOT_PID=$!
 
 # Start Quality Control System (Port 5002)
 echo "🔍 Starting Quality Control System on port 5002..."
-cd "$SCRIPT_DIR/edge-ai-quality-control"
-source venv/Scripts/activate
+setup_demo_venv "edge-ai-quality-control" "Quality Control System"
 python azure_ai_quality_control.py &
 QC_PID=$!
 
 # Start Smart Camera System (Port 5003)
 echo "📹 Starting Smart Camera System on port 5003..."
-cd "$SCRIPT_DIR/edge-ai-smart-camera"
-source venv/Scripts/activate
+setup_demo_venv "edge-ai-smart-camera" "Smart Camera System"
 python smart_camera_app.py &
 CAMERA_PID=$!
 
 # Start Windows AI Foundry Demo (Port 5004)
 echo "🪟 Starting Windows AI Foundry Demo on port 5004..."
-cd "$SCRIPT_DIR/edge-ai-windows-foundry"
-source venv/Scripts/activate
+setup_demo_venv "edge-ai-windows-foundry" "Windows AI Foundry Demo"
 python windows_ai_foundry_app.py &
 WINDOWS_PID=$!
 

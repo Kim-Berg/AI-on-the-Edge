@@ -1,6 +1,6 @@
 # 🪟 Windows AI Foundry Demo
 
-A comprehensive showcase of local AI capabilities running directly on Windows devices through the Windows AI Foundry platform. Experience 8 different AI capabilities powered by 7 real AI models - all running locally for complete privacy and maximum performance.
+A comprehensive showcase of local AI capabilities running directly on Windows devices through the Windows AI Foundry platform. Experience 8 different AI capabilities powered by 7 AI models - all running locally for complete privacy and performance.
 
 **Port**: http://localhost:5004
 
@@ -63,13 +63,13 @@ The script will automatically:
 
 ## 🚀 Features
 
-- **🤖 Multi-Model Support**: Access to 7 different AI models with real-time switching
+- **🤖 Multi-Model Support**: Access to 7 different AI models with model switching
 - **🎯 8 AI Capabilities**: Text generation, code assistance, document analysis, creative writing, multimodal analysis, advanced reasoning, translation, and summarization
-- **🔒 100% Local Processing**: All AI operations run locally for complete privacy
-- **⚡ Real-time Performance**: Enhanced with intelligent timeout handling and auto-retry mechanisms
-- **📊 Model Performance Monitoring**: Real-time metrics and connection status indicators
+- **🔒 Local Processing**: All AI operations run locally for complete privacy
+- **⚡ Performance**: Enhanced with timeout handling and auto-retry mechanisms
+- **📊 Model Performance Monitoring**: Metrics and connection status indicators
 - **🎨 Interactive Interface**: Modern web UI with responsive design
-- **🔄 Graceful Error Handling**: Automatic recovery from timeouts and connection issues
+- **🔄 Error Handling**: Automatic recovery from timeouts and connection issues
 - **📱 Mobile Friendly**: Works on desktop, tablet, and mobile devices
 
 ## 🎯 Available AI Capabilities
@@ -117,17 +117,17 @@ The script will automatically:
    - Executive summaries and abstracts
 
 ### Technical Highlights
-- **7 AI Models**: Real-time switching between different AI models
-- **Intelligent Timeouts**: Model-specific timeout handling (60s to 5+ minutes)
+- **7 AI Models**: Switching between different AI models
+- **Timeout Handling**: Model-specific timeout handling (60s to 5+ minutes)
   - qwen2.5-0.5b-instruct: 60s timeout (fast model)
   - Phi-3.5-mini-instruct: 300s timeout
   - Llama models: 300s timeout
   - Mistral-7B: 400s timeout
   - DeepSeek-R1: 500s timeout (advanced reasoning)
 - **Auto-retry System**: Automatic recovery with 10-minute fallback timeouts
-- **Connection Monitoring**: Real-time status updates with visual indicators (🟢 connected, 🔴 disconnected)
+- **Connection Monitoring**: Status updates with visual indicators (🟢 connected, 🔴 disconnected)
 - **Session Management**: Fresh HTTP sessions prevent connection issues
-- **Streaming Support**: Real-time response generation where available
+- **Streaming Support**: Response generation where available
 
 ## 🚀 Usage
 
@@ -135,7 +135,7 @@ The script will automatically:
 2. **Select an AI Model** from the dropdown menu
 3. **Choose a Capability** by clicking on any of the 8 cards
 4. **Try Example Prompts** or create your own custom prompts
-5. **Generate Response** and watch real AI processing in action
+5. **Generate Response** and watch AI processing in action
 6. **View Results** with syntax highlighting and markdown rendering
 
 ### Model Performance Guide

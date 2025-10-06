@@ -7,8 +7,8 @@ This demo showcases an intelligent IoT sensor system that monitors industrial eq
 
 ## Key Features
 - **🔮 Predictive Maintenance**: ML models (Isolation Forest) predict when equipment will need service
-- **📊 Real-time Monitoring**: Continuous sensor data analysis on edge devices
-- **⚠️ Anomaly Detection**: Instantly identifies unusual patterns in machine behavior
+- **📊 Monitoring**: Continuous sensor data analysis on edge devices
+- **⚠️ Anomaly Detection**: Identifies unusual patterns in machine behavior
 - **💯 Equipment Health Scoring**: AI-powered health assessment of industrial assets
 - **🚨 Maintenance Alerts**: Proactive notifications before failures occur
 - **⚡ Edge Optimization**: Lightweight models designed for constrained IoT devices
@@ -53,7 +53,7 @@ Current] →     Anomaly             Alerts]
 ```
 
 ## Technology Stack
-- **Edge Computing**: Real-time inference on industrial gateways
+- **Edge Computing**: Inference on industrial gateways
 - **Time Series Analysis**: Advanced signal processing and feature extraction
 - **Machine Learning**: 
   - Isolation Forest for anomaly detection
@@ -61,9 +61,9 @@ Current] →     Anomaly             Alerts]
   - Health scoring algorithms
 - **Industrial IoT**: 
   - MQTT broker simulation
-  - Real-time sensor data streaming
+  - Sensor data streaming
   - Alert management system
-- **Dashboard**: Flask with SocketIO for real-time visualization
+- **Dashboard**: Flask with SocketIO for visualization
 - **Data Processing**: NumPy, Pandas, scikit-learn
 
 ## Prerequisites
@@ -137,7 +137,7 @@ This will automatically:
 
 1. **Show normal equipment operation** with healthy sensors
    - Point out the health scores (near 100%)
-   - Show real-time sensor data visualization
+   - Show sensor data visualization
    - Explain the four monitored parameters (vibration, temperature, pressure, current)
 
 2. **Introduce gradual degradation patterns**
