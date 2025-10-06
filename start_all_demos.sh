@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e  # Exit on error
+set -o pipefail  # Exit on pipe failure
+
 # Start All AI on the Edge Demos
 # This script starts all demos in separate terminals with their virtual environments
 
