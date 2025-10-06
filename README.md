@@ -1,18 +1,4 @@
-# Edge AI DemoAI-powered quality control with Azure AI FPredictive maintenance for industrial equipment using edge AI.
-- 🏭 Multi-equipment health monitoring
-- 🔮 ML-based predictive maintenance (Isolation Forest)
-- ⚠️ Anomaly detection on sensor data
-- 📈 Time-series analysis (vibration, temperature, pressure)
-- 💰 Cost savings tracking and ROI calculations
-- 📊 Live dashboard with equipment statusLocal integration.
-- 🤖 Azure AI model integration for defect analysis
-- 👁️ Vision analysis with multimodal AI models
-- ⚡ Defect detection and processing
-- 📊 Live quality metrics dashboard
-- 🔄 Fallback to simulation mode when AI service unavailable
-- 🏭 Manufacturing production simulationtion
-
-Welcome to the Edge AI demo collection! These demos showcase how to run AI models locally on edge devices for industrial IoT applications.
+Welcome to the Edge AI demo collection! These demos showcase how to run AI models locally on edge devices and some industrial IoT applications.
 
 ## 🚀 Quick Start
 
@@ -89,24 +75,6 @@ Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
 - 🔋 **Offline Capable**: Functionality during internet outages
 - 📈 **Scalable**: Deploy independently across multiple devices
 - 🤖 **Local AI**: Powered by Azure AI Foundry Local with AI models
-
-## 🎤 Demo Presentation Guide
-
-### Suggested Demo Flow (15-20 minutes)
-1. **Overview** (2 min) - Introduce edge AI concept and demo collection
-2. **Quality Control** (5 min) - Show Azure AI integration and defect detection
-3. **Smart Camera** (4 min) - Demonstrate video analytics and object detection
-4. **IoT Sensors** (4 min) - Present predictive maintenance and anomaly detection
-5. **Windows AI Foundry** (3 min) - Showcase comprehensive AI capabilities
-6. **Q&A** (2 min) - Address questions
-
-### Key Talking Points
-- **Latency comparison**: Edge processing reduces latency vs cloud roundtrip
-- **Privacy & Compliance**: Data processed locally on premises
-- **Offline capability**: Disconnect internet to show continued operation
-- **Cost savings**: No per-request API fees, reduced bandwidth costs
-- **Local AI models**: Azure AI Foundry Local integration
-- **Industrial applications**: Manufacturing, IoT, surveillance use cases
 
 ## 🛠️ Technical Stack
 
