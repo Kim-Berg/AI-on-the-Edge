@@ -111,6 +111,13 @@ cd "$SCRIPT_DIR/edge-ai-windows-foundry"
 $PYTHON_CMD windows_ai_foundry_app.py &
 WINDOWS_PID=$!
 
+# Start RAG Document Search (Port 5005)
+echo "📚 Starting RAG Document Search on port 5005..."
+PYTHON_CMD=$(setup_demo_venv "edge-ai-rag-document-search" "RAG Document Search")
+cd "$SCRIPT_DIR/edge-ai-rag-document-search"
+$PYTHON_CMD rag_document_app.py &
+RAG_PID=$!
+
 echo ""
 echo "========================================="
 echo "✅ All Demos Started Successfully!"
@@ -119,9 +126,10 @@ echo ""
 echo "📋 Demo URLs:"
 echo "   🔍 Quality Control System:        http://localhost:5000"
 echo "   🤖 Azure Foundry Chat Playground: http://localhost:5001"
-echo "   � Smart Camera System:           http://localhost:5002"
-echo "   � IoT Sensor Simulator:          http://localhost:5003"
+echo "   📹 Smart Camera System:           http://localhost:5002"
+echo "   📡 IoT Sensor Simulator:          http://localhost:5003"
 echo "   🪟 Windows AI Foundry Demo:       http://localhost:5004"
+echo "   📚 RAG Document Search:           http://localhost:5005"
 echo ""
 echo "💡 Tip: If Foundry Local is not running, some demos will operate in limited mode"
 echo ""
@@ -129,7 +137,7 @@ echo "🛑 To stop all demos, press Ctrl+C or run: ./stop_all_demos.sh"
 echo ""
 
 # Wait for user interrupt
-trap "echo ''; echo '🛑 Stopping all demos...'; kill $FOUNDRY_PID $IOT_PID $QC_PID $CAMERA_PID $WINDOWS_PID 2>/dev/null; echo '✅ All demos stopped'; exit 0" INT
+trap "echo ''; echo '🛑 Stopping all demos...'; kill $FOUNDRY_PID $IOT_PID $QC_PID $CAMERA_PID $WINDOWS_PID $RAG_PID 2>/dev/null; echo '✅ All demos stopped'; exit 0" INT
 
 # Keep script running
 wait

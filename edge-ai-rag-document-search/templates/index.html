@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Document Search - Windows AI Foundry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <i class="fas fa-book-reader header-icon"></i>
+                    <div>
+                        <h1>RAG Document Search</h1>
+                        <p class="subtitle">Retrieval-Augmented Generation with Windows AI Foundry Local</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator" id="statusIndicator">
+                        <i class="fas fa-circle"></i>
+                        <span id="statusText">Initializing...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Model Selection Section -->
+        <section class="model-section">
+            <div class="model-section-header">
+                <h3><i class="fas fa-robot"></i> AI Model Selection</h3>
+                <div class="foundry-status" id="foundryStatus">
+                    <i class="fas fa-circle"></i>
+                    <span id="foundryStatusText">Checking...</span>
+                </div>
+            </div>
+            <div class="model-selector">
+                <select id="modelSelect" class="model-select">
+                    <option value="">Loading models...</option>
+                </select>
+                <button id="refreshModels" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div id="modelDetails" class="model-info-box">
+                <p>Select a model to see details</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel: Documents -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-file-alt"></i> Documents</h2>
+                    <button class="btn btn-primary btn-sm" id="uploadBtn">
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <i class="fas fa-file"></i>
+                        <div class="stat-value" id="docCount">0</div>
+                        <div class="stat-label">Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-layer-group"></i>
+                        <div class="stat-value" id="chunkCount">0</div>
+                        <div class="stat-label">Chunks</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-font"></i>
+                        <div class="stat-value" id="wordCount">0</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                </div>
+
+                <!-- Document List -->
+                <div class="document-list" id="documentList">
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No documents uploaded yet</p>
+                        <p class="help-text">Upload a text document to get started</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Search & RAG -->
+            <div class="right-panel">
+                <!-- Query Input -->
+                <div class="query-section">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-search"></i> Ask Questions</h2>
+                        <div class="model-info" id="modelInfo">
+                            <i class="fas fa-brain"></i>
+                            <span id="currentModel">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="query-input-container">
+                        <textarea 
+                            id="queryInput" 
+                            placeholder="Ask a question about your documents... (e.g., 'What are the main points discussed?')"
+                            rows="3"
+                        ></textarea>
+                        <div class="query-actions">
+                            <div class="search-mode">
+                                <label>
+                                    <input type="radio" name="searchMode" value="rag" checked> 
+                                    <i class="fas fa-magic"></i> RAG Answer
+                                </label>
+                                <label>
+                                    <input type="radio" name="searchMode" value="search"> 
+                                    <i class="fas fa-search"></i> Semantic Search
+                                </label>
+                            </div>
+                            <button class="btn btn-primary" id="queryBtn">
+                                <i class="fas fa-paper-plane"></i> Submit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Example Queries -->
+                    <div class="example-queries">
+                        <span class="example-label">Examples:</span>
+                        <button class="btn-example" data-query="What are the main topics in these documents?">
+                            Main topics
+                        </button>
+                        <button class="btn-example" data-query="Summarize the key points">
+                            Summarize
+                        </button>
+                        <button class="btn-example" data-query="What are the most important facts mentioned?">
+                            Key facts
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <div class="results-header">
+                        <h3><i class="fas fa-lightbulb"></i> Results</h3>
+                        <span class="response-time" id="responseTime"></span>
+                    </div>
+                    
+                    <!-- Answer Display (RAG Mode) -->
+                    <div class="answer-container" id="answerContainer" style="display: none;">
+                        <div class="answer-label">
+                            <i class="fas fa-robot"></i> AI Answer
+                        </div>
+                        <div class="answer-content" id="answerContent"></div>
+                        
+                        <!-- Sources -->
+                        <div class="sources-section" id="sourcesSection" style="display: none;">
+                            <div class="sources-label">
+                                <i class="fas fa-link"></i> Sources
+                            </div>
+                            <div class="sources-list" id="sourcesList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Search Results (Search Mode) -->
+                    <div class="search-results" id="searchResults" style="display: none;"></div>
+
+                    <!-- Empty State -->
+                    <div class="results-empty" id="resultsEmpty">
+                        <i class="fas fa-question-circle"></i>
+                        <p>Ask a question to see results</p>
+                        <p class="help-text">Upload documents first, then ask questions</p>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="results-loading" id="resultsLoading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Processing your query...</p>
+                    </div>
+
+                    <!-- Error State -->
+                    <div class="results-error" id="resultsError" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p id="errorMessage"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Modal -->
+        <div class="modal" id="uploadModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-upload"></i> Upload Document</h2>
+                    <button class="modal-close" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-tabs">
+                        <button class="tab-btn active" data-tab="file">
+                            <i class="fas fa-file-upload"></i> Upload File
+                        </button>
+                        <button class="tab-btn" data-tab="text">
+                            <i class="fas fa-keyboard"></i> Paste Text
+                        </button>
+                    </div>
+
+                    <!-- File Upload Tab -->
+                    <div class="tab-content active" id="fileTab">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="fileInput" accept=".txt,.md,.log,.json,.csv" hidden>
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drop a file here or click to browse</p>
+                            <p class="help-text">Supported: .txt, .md, .log, .json, .csv (Max 16MB)</p>
+                        </div>
+                        <div class="file-info" id="fileInfo" style="display: none;">
+                            <i class="fas fa-file-alt"></i>
+                            <span id="fileName"></span>
+                            <button class="btn-icon" id="clearFile">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Text Input Tab -->
+                    <div class="tab-content" id="textTab">
+                        <input 
+                            type="text" 
+                            id="textFileName" 
+                            placeholder="Document name (e.g., my-notes.txt)"
+                            class="form-input"
+                        >
+                        <textarea 
+                            id="textInput" 
+                            placeholder="Paste your document text here..."
+                            rows="10"
+                            class="form-textarea"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelUpload">Cancel</button>
+                    <button class="btn btn-primary" id="submitUpload">
+                        <i class="fas fa-check"></i> Upload & Process
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2><i class="fas fa-trash"></i> Delete Document</h2>
+                    <button class="modal-close" id="closeDeleteModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this document?</p>
+                    <p class="document-name" id="deleteDocumentName"></p>
+                    <p class="help-text">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+                    <button class="btn btn-danger" id="confirmDelete">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <i class="fas fa-info-circle"></i>
+                    <span>RAG Demo using Windows AI Foundry Local for intelligent document Q&A</span>
+                </div>
+                <div class="footer-right">
+                    <span id="embeddingModel">all-MiniLM-L6-v2</span>
+                    <i class="fas fa-robot"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

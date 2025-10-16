@@ -16,6 +16,7 @@ if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ "$OSTYPE" == "c
     taskkill //F //FI "IMAGENAME eq python.exe" //FI "WINDOWTITLE eq *quality_control*" 2>/dev/null || true
     taskkill //F //FI "IMAGENAME eq python.exe" //FI "WINDOWTITLE eq *smart_camera*" 2>/dev/null || true
     taskkill //F //FI "IMAGENAME eq python.exe" //FI "WINDOWTITLE eq *windows_ai_foundry*" 2>/dev/null || true
+    taskkill //F //FI "IMAGENAME eq python.exe" //FI "WINDOWTITLE eq *rag_document*" 2>/dev/null || true
 else
     # Linux/macOS - More specific process matching
     pkill -f "foundry_app.py" || true
@@ -23,6 +24,7 @@ else
     pkill -f "azure_ai_quality_control.py" || true
     pkill -f "smart_camera_app.py" || true
     pkill -f "windows_ai_foundry_app.py" || true
+    pkill -f "rag_document_app.py" || true
 fi
 
 echo "✅ All demos stopped successfully"

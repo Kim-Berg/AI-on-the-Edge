@@ -25,14 +25,15 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 **What the startup script does:**
 1. ✅ Checks if Foundry Local service is running
 2. 🚀 Starts Foundry Local service if not running (requires ~30 seconds to initialize)
-3. 🎯 Launches all 5 demos with their virtual environments
+3. 🎯 Launches all 6 demos with their virtual environments
 
 **All demos will run on separate ports:**
 - 🔍 Quality Control System: http://localhost:5000
 - 🤖 Azure Foundry Chat Playground: http://localhost:5001
-- � Smart Camera System: http://localhost:5002
-- � IoT Sensor Simulator: http://localhost:5003
+- 📹 Smart Camera System: http://localhost:5002
+- 📡 IoT Sensor Simulator: http://localhost:5003
 - 🪟 Windows AI Foundry Demo: http://localhost:5004
+- 📚 RAG Document Search: http://localhost:5005
 
 ### 🛑 Stopping All Demos
 
@@ -71,6 +72,11 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 **Port**: http://localhost:5004  
 **Description**: Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains including text generation, code assistance, document analysis, creative writing, multimodal processing, reasoning, translation, and summarization
 
+### 6. RAG Document Search 📚
+**Location**: `edge-ai-rag-document-search/`  
+**Port**: http://localhost:5005  
+**Description**: Intelligent document search and question-answering system using Retrieval-Augmented Generation with Windows AI Foundry Local for AI-powered answers with source citations
+
 ---
 
 ## ⚙️ Important Notes
@@ -78,6 +84,11 @@ chmod +x start_all_demos.sh stop_all_demos.sh
 ### Virtual Environments
 Each demo uses its own virtual environment to avoid dependency conflicts:
 - `edge-ai-foundrylocal-chat-playground/venv/`
+- `edge-ai-iot-sensor/venv/`
+- `edge-ai-quality-control/venv/`
+- `edge-ai-smart-camera/venv/`
+- `edge-ai-windows-foundry/venv/`
+- `edge-ai-rag-document-search/venv/`
 - `edge-ai-iot-sensor/venv/`
 - `edge-ai-quality-control/venv/`
 - `edge-ai-smart-camera/venv/`

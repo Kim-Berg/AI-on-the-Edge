@@ -68,6 +68,20 @@ Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
 - 🔄 Timeout & retry handling
 - 🔌 Connection monitoring
 
+### 6. RAG Document Search 📚
+**Path**: `edge-ai-rag-document-search/`  
+**URL**: http://localhost:5005
+
+Intelligent document search and Q&A using Retrieval-Augmented Generation.
+- 📄 Upload and process text documents
+- 🔍 Semantic search with sentence embeddings
+- 🤖 AI-powered question answering with RAG
+- 📊 Source citations and relevance scores
+- 🧩 Intelligent document chunking
+- 💾 Persistent storage of documents and embeddings
+- ⚡ Real-time search and answer generation
+- 🏠 Local processing with Windows AI Foundry
+
 ### Key Demo Benefits
 - 🚀 **Fast Processing**: Low-latency response times with local inference
 - 🔒 **Privacy First**: Data processed locally, doesn't leave the device
@@ -82,6 +96,7 @@ Comprehensive showcase of Windows AI Foundry capabilities across 8 AI domains.
 - **Azure AI Foundry Local**: Local AI model serving and inference
 - **Computer Vision**: OpenCV, YOLO, MobileNet SSD for object detection
 - **Machine Learning**: scikit-learn (Isolation Forest) for anomaly detection
+- **RAG & Embeddings**: Sentence Transformers for semantic search and retrieval
 - **Industrial Protocols**: MQTT, simulated OPC-UA integration
 - **Web Framework**: Flask with SocketIO for updates
 - **Frontend**: Responsive HTML/CSS/JavaScript
