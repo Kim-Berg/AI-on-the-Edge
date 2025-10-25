@@ -16,15 +16,27 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Check and start Foundry Local service if needed
 echo "🔍 Checking Foundry Local service status..."
 if command -v foundry &> /dev/null; then
-    # Check if service is already running (check multiple possible ports)
-    if curl -s http://localhost:60632/v1/models > /dev/null 2>&1 || curl -s http://localhost:52009/v1/models > /dev/null 2>&1; then
+    # Check if service is actually running by checking the status output
+    FOUNDRY_STATUS=$(foundry service status 2>&1)
+    if echo "$FOUNDRY_STATUS" | grep -q "is running"; then
         echo "✅ Foundry Local service is already running"
+        # Extract and display the port (more portable approach)
+        FOUNDRY_PORT=$(echo "$FOUNDRY_STATUS" | grep -o 'http://127.0.0.1:[0-9]*' | head -1 | cut -d: -f3)
+        if [ ! -z "$FOUNDRY_PORT" ]; then
+            echo "   📡 Foundry Local running on port: $FOUNDRY_PORT"
+        fi
     else
         echo "🚀 Starting Foundry Local service..."
         foundry service start
         echo "⏳ Waiting for Foundry Local service to initialize (30 seconds)..."
         sleep 30
         echo "✅ Foundry Local service started"
+        # Display the port after starting (more portable approach)
+        FOUNDRY_STATUS=$(foundry service status 2>&1)
+        FOUNDRY_PORT=$(echo "$FOUNDRY_STATUS" | grep -o 'http://127.0.0.1:[0-9]*' | head -1 | cut -d: -f3)
+        if [ ! -z "$FOUNDRY_PORT" ]; then
+            echo "   📡 Foundry Local running on port: $FOUNDRY_PORT"
+        fi
     fi
 else
     echo "⚠️  Foundry CLI not found. Windows AI Foundry demo will run in limited mode."

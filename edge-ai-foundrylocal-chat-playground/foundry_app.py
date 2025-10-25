@@ -686,6 +686,12 @@ def get_status():
     })
 
 if __name__ == '__main__':
+    # Set UTF-8 encoding for console output on Windows
+    import sys
+    if sys.platform == 'win32':
+        import codecs
+        sys.stdout.reconfigure(encoding='utf-8') if hasattr(sys.stdout, 'reconfigure') else None
+    
     print("🚀 Starting Azure Foundry Local Chat Playground...")
     
     if FOUNDRY_AVAILABLE:

@@ -69,9 +69,46 @@ class WindowsAIFoundryManager:
         # Initialize Windows AI Foundry connection
         self._initialize_foundry_connection()
         
+    def _get_foundry_port(self):
+        """Get the port that Foundry Local is running on"""
+        try:
+            # Try to find the port from foundry service status
+            result = subprocess.run(['foundry', 'service', 'status'], 
+                                  capture_output=True, text=True, timeout=10)
+            
+            if result.returncode == 0:
+                # Look for port in output - Foundry Local shows URL like http://127.0.0.1:PORT/
+                lines = result.stdout.split('\n')
+                for line in lines:
+                    if 'http://127.0.0.1:' in line or 'http://localhost:' in line:
+                        # Extract port number from URL
+                        port_match = re.search(r':(\d+)', line)
+                        if port_match:
+                            return int(port_match.group(1))
+            
+            return None
+        except Exception as e:
+            logger.debug(f"Could not get foundry port: {e}")
+            return None
+        
     def _initialize_foundry_connection(self):
         """Initialize connection to Windows AI Foundry service"""
         try:
+            # First, try to get the actual port from foundry service status
+            foundry_port = self._get_foundry_port()
+            if foundry_port:
+                try:
+                    endpoint = f"http://localhost:{foundry_port}"
+                    response = requests.get(f"{endpoint}/v1/models", timeout=5)
+                    if response.status_code == 200:
+                        self.foundry_endpoint = endpoint
+                        self.base_url = endpoint
+                        logger.info(f"✅ Connected to Foundry Local service at {endpoint}")
+                        self._load_available_models()
+                        return
+                except requests.exceptions.RequestException:
+                    pass
+            
             # Check for local AI services (Windows AI Foundry compatible)
             endpoints = [
                 ('http://localhost:60632', '/v1/models'), # Foundry Local service port (dynamic)
@@ -663,6 +700,12 @@ def handle_disconnect():
     logger.info('Client disconnected')
 
 if __name__ == '__main__':
+    # Set UTF-8 encoding for console output on Windows
+    import sys
+    if sys.platform == 'win32':
+        import codecs
+        sys.stdout.reconfigure(encoding='utf-8') if hasattr(sys.stdout, 'reconfigure') else None
+    
     print("\n" + "="*60)
     print("🪟 Windows AI Foundry Demo - Comprehensive AI Showcase")
     print("="*60)

@@ -170,11 +170,54 @@ class AzureAIQualityControlSystem:
         logger.warning("❌ Could not load any models with Foundry Local SDK")
         return self._setup_direct_api()
     
+    def _get_foundry_port(self):
+        """Get the port that Foundry Local is running on"""
+        try:
+            # Try to find the port from foundry service status
+            result = subprocess.run(['foundry', 'service', 'status'], 
+                                  capture_output=True, text=True, timeout=10)
+            
+            if result.returncode == 0:
+                # Look for port in output - Foundry Local shows URL like http://127.0.0.1:PORT/
+                lines = result.stdout.split('\n')
+                for line in lines:
+                    if 'http://127.0.0.1:' in line or 'http://localhost:' in line:
+                        # Extract port number from URL
+                        import re
+                        port_match = re.search(r':(\d+)', line)
+                        if port_match:
+                            return int(port_match.group(1))
+            
+            return None
+        except Exception as e:
+            logger.debug(f"Could not get foundry port: {e}")
+            return None
+    
     def _setup_direct_api(self):
         """Fallback method for direct API connection"""
         logger.info("📡 Attempting direct API connection to Foundry Local...")
         
-        # Azure AI Foundry Local common endpoints and configurations
+        # First, try to get the actual port from foundry service status
+        foundry_port = self._get_foundry_port()
+        if foundry_port:
+            config = {
+                "base_url": f"http://localhost:{foundry_port}/v1",
+                "api_key": "dummy-key",
+                "name": f"Azure AI Foundry Local (port {foundry_port})"
+            }
+            try:
+                logger.info(f"🔍 Testing: {config['name']}")
+                response = requests.get(f"{config['base_url']}/models", timeout=5)
+                if response.status_code == 200:
+                    logger.info(f"✅ Connected to {config['name']}")
+                    self.foundry_endpoint = config['base_url']
+                    self.ai_client = "direct_api"
+                    self.model_name = "generic-model"
+                    return True
+            except Exception as e:
+                logger.debug(f"Failed to connect to {config['name']}: {e}")
+        
+        # Fallback to Azure AI Foundry Local common endpoints and configurations
         foundry_configs = [
             {
                 "base_url": "http://localhost:3928/v1", 
@@ -185,6 +228,16 @@ class AzureAIQualityControlSystem:
                 "base_url": "http://localhost:1234/v1", 
                 "api_key": "not-needed",
                 "name": "Azure AI Foundry Local (port 1234)"
+            },
+            {
+                "base_url": "http://localhost:60632/v1",
+                "api_key": "dummy-key",
+                "name": "Azure AI Foundry Local (port 60632)"
+            },
+            {
+                "base_url": "http://localhost:52009/v1",
+                "api_key": "dummy-key",
+                "name": "Azure AI Foundry Local (port 52009)"
             }
         ]
         
@@ -1088,6 +1141,12 @@ def production_loop():
             time.sleep(0.5)  # Check more frequently when stopped
 
 if __name__ == '__main__':
+    # Set UTF-8 encoding for console output on Windows
+    import sys
+    if sys.platform == 'win32':
+        import codecs
+        sys.stdout.reconfigure(encoding='utf-8') if hasattr(sys.stdout, 'reconfigure') else None
+    
     print("Starting Enhanced Edge AI Quality Control System...")
     print("🤖 Real Azure AI integration enabled!" if quality_system.ai_client else "📋 Running in simulation mode")
     print("Access dashboard at: http://localhost:5000")

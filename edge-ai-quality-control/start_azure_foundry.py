@@ -8,15 +8,51 @@ import json
 import time
 import os
 import sys
+import subprocess
+import re
+
+def get_foundry_port():
+    """Get the port that Foundry Local is running on"""
+    try:
+        result = subprocess.run(['foundry', 'service', 'status'], 
+                              capture_output=True, text=True, timeout=10)
+        
+        if result.returncode == 0:
+            # Look for port in output - Foundry Local shows URL like http://127.0.0.1:PORT/
+            lines = result.stdout.split('\n')
+            for line in lines:
+                if 'http://127.0.0.1:' in line or 'http://localhost:' in line:
+                    # Extract port number from URL
+                    port_match = re.search(r':(\d+)', line)
+                    if port_match:
+                        return int(port_match.group(1))
+        
+        return None
+    except Exception as e:
+        return None
 
 def check_azure_foundry_local():
     """Check if Azure AI Foundry Local is running"""
-    endpoints = [
+    # First, try to get the dynamic port from foundry service status
+    foundry_port = get_foundry_port()
+    endpoints = []
+    
+    if foundry_port:
+        endpoints.append({
+            "url": f"http://localhost:{foundry_port}",
+            "name": f"Azure AI Foundry Local (detected port {foundry_port})"
+        })
+        print(f"🔍 Detected Foundry Local running on port {foundry_port}")
+    
+    # Add fallback endpoints
+    endpoints.extend([
         {"url": "http://localhost:3928", "name": "Azure AI Foundry Local (default port)"},
         {"url": "http://localhost:1234", "name": "Azure AI Foundry Local (alt port)"},
+        {"url": "http://localhost:60632", "name": "Azure AI Foundry Local (dynamic port 60632)"},
+        {"url": "http://localhost:52009", "name": "Azure AI Foundry Local (dynamic port 52009)"},
         {"url": "http://127.0.0.1:3928", "name": "Azure AI Foundry Local (127.0.0.1)"},
         {"url": "http://localhost:11434", "name": "Ollama (compatibility mode)"}
-    ]
+    ])
     
     print("🔍 Checking for Azure AI Foundry Local...")
     
